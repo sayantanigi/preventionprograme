@@ -1,4 +1,7 @@
 <?php $settings = $this->Adminmodel->get('settings', true, 'settingId', 1); ?>
+<style>
+    body,html{display:flex;align-items:center;justify-content:center;background:#eee;font-family:Arial,sans-serif}
+</style>
 <body>
     <div class="login-card">
         <img src="<?= base_url('uploads/logos/'.@$settings->logo) ?>" alt="Logo">
