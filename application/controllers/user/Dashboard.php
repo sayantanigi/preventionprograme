@@ -7,7 +7,6 @@ class Dashboard extends CI_Controller {
 		$this->load->library('session');
 		$this->Adminmodel->userloggedIn();
 	}
-
 	public function index() {
 		//echo CI_VERSION;DIE;
 		$data = array(

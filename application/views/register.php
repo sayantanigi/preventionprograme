@@ -1,5 +1,7 @@
 <?php $settings = $this->Adminmodel->get('settings', true, 'settingId', 1); ?>
-
+<style>
+    body,html{display:flex;align-items:center;justify-content:center;background:#eee;font-family:Arial,sans-serif}
+</style>
 <div class="form-container">
     <div class="logo">
         <img src="<?= base_url('uploads/logos/'.@$settings->logo) ?>" alt="Logo">
@@ -25,7 +27,7 @@
     </div>
     <?php } ?>
     <h1>Create Your Account</h1>
-    <form action="<?= base_url('Login/register')?>" method="POST">
+    <form action="<?= base_url('Login/register')?>" method="POST" id="signupForm">
         <div class="input-field">
             <input type="text" name="fname" id="fname" placeholder="Enter your First name" required>
         </div>
@@ -74,6 +76,64 @@ $(document).ready(function() {
             $('#message').html('Password Mismatch').css('color', 'red');
             document.getElementById('signupButton').disabled = true;
         }
+    });
+
+    $('#email').on('blur', function () {
+        var email = $(this).val();
+        $.ajax({
+            type: "POST",
+            url: "<?= base_url('Login/email_check')?>",
+            data: {email: email},
+            dataType:'json',
+            beforeSend : function(){},
+            success:function(returndata) {
+                //console.log(returndata.success);
+                if(returndata.success == 'Email available') {
+                    $('#email').fadeIn().css('border', '2px solid green');
+                    $('#message').html(returndata.success).css('color', 'red');
+                    document.getElementById('signupButton').disabled = false;
+                } else {
+                    $('#email').fadeIn().css('border', '2px solid red');
+                    $('#message').html(returndata.error).css('color', 'red');
+                    document.getElementById('signupButton').disabled = true;
+                }
+            }
+        })
+    });
+
+    $('#signupForm').on('submit', function (e) {
+        e.preventDefault();
+        var email = $('#email').val();
+        var emailValid = false;
+        $.ajax({
+            type: "POST",
+            url: "<?= base_url('Login/email_check')?>",
+            data: {email: email},
+            dataType: 'json',
+            beforeSend: function() {
+
+            },
+            success: function(returndata) {
+                if(returndata.success == 'Email available') {
+                    $('#email').fadeIn().css('border', '2px solid green');
+                    $('#message').html(returndata.success).css('color', 'green');
+                    document.getElementById('signupButton').disabled = false;
+                    emailValid = true;
+                    $('#signupForm')[0].submit();
+                } else {
+                    $('#email').fadeIn().css('border', '2px solid red');
+                    $('#message').html(returndata.error).css('color', 'red');
+                    document.getElementById('signupButton').disabled = true;
+                    emailValid = false;
+                }
+            },
+            complete: function() {
+                if (!emailValid) {
+                    return false;
+                }
+            }
+        });
+        return emailValid;
     });
 })
 </script>

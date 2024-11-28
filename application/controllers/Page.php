@@ -14,9 +14,9 @@ class Page extends CI_Controller {
 		);
 		$query = $this->db->query("select * from about_us where status = '1' and slug = 'about' ORDER BY id DESC LIMIT 1");
 		$data['about'] = ($query->num_rows() > 0) ? $query->row() : FALSE;
-		$this->load->view('header_front', $data);
-		$this->load->view('about');
-		$this->load->view('footer_front');
+		$this->load->view('frontend/header_front', $data);
+		$this->load->view('frontend/about');
+		$this->load->view('frontend/footer_front');
 	}
     public function preventingpain() {
 		$data = array(
@@ -24,9 +24,9 @@ class Page extends CI_Controller {
 			'page' => 'Preventing Pain',
 			'subpage' => 'Preventing Pain',
 		);
-		$this->load->view('header_front', $data);
-		$this->load->view('preventingpain');
-		$this->load->view('footer_front');
+		$this->load->view('frontend/header_front', $data);
+		$this->load->view('frontend/preventingpain');
+		$this->load->view('frontend/footer_front');
 	}
 	public function faq() {
 		$data = array(
@@ -85,9 +85,9 @@ class Page extends CI_Controller {
 		);
 		$query = $this->db->query("select email from settings ORDER BY settingId DESC LIMIT 1");
 		$data['setting'] = ($query->num_rows() > 0) ? $query->row() : FALSE;
-		$this->load->view('header_front', $data);
-		$this->load->view('contact');
-		$this->load->view('footer_front');
+		$this->load->view('frontend/header_front', $data);
+		$this->load->view('frontend/contact');
+		$this->load->view('frontend/footer_front');
 	}
 	function submitcontact(){
 		if($_SERVER['REQUEST_METHOD'] == 'POST'){

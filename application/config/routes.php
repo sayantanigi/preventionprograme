@@ -73,19 +73,22 @@ $route['event-and-participant'] = 'event/event_participant';
 $route['setting/customize-payment'] = 'setting/customize_pay';
 $route['email/template-management'] = 'email/template_management';
 $route['setting/payment-method'] = 'setting/payment_method';
+$route['resetpassword/(:any)'] = 'Forgetpassword/reset/$1';
+
+
+//coach
+$route['coach/profile_settings'] = 'coach/Dashboard/profile';
+$route['coach/update_profile'] = 'coach/Dashboard/update_profile';
+
+
 
 //welcome
 $route['paymentPage'] = 'welcome/paymentPage';
 $route['paymentStatus'] = 'welcome/paymentStatus';
 $route['web_view_stripe_payment'] = 'welcome/web_view_stripe_payment';
-
-
 $route['web_view_event_pay'] = 'welcome/web_view_event_pay';
 $route['stripeEventPayment'] = 'welcome/stripeEventPayment';
 $route['stripeEventPaymentStatus'] = 'welcome/stripeEventPaymentStatus';
-
-
-
 $route['paypalEventPaymentStatus'] = 'welcome/paypalEventPaymentStatus';
 $route['paypalPayment'] = 'welcome/paypalPayment';
 $route['paypalSuccess'] = 'welcome/paypalSuccess';

@@ -1,4 +1,7 @@
 <?php $settings = $this->Adminmodel->get('settings', true, 'settingId', 1); ?>
+<style>
+    body,html{display:flex;align-items:center;justify-content:center;background:#eee;font-family:Arial,sans-serif}
+</style>
 <!-- Submission Complete Container -->
 <div class="DocumentContainer DataComplete" id="submissionComplete">
     <img src="<?= base_url('assets/users_assets/images/CompleteIcon.png'); ?>" alt="Logo">

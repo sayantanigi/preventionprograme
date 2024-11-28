@@ -13,7 +13,7 @@ class Login extends CI_Controller {
     public function index() {
         $data = array(
             'title' => 'Prevention Programme',
-            'page' => 'Login / Sign up',
+            'page' => 'Login',
             'subpage' => 'login',
         );
         if ($this->input->post('username')) {
@@ -34,7 +34,6 @@ class Login extends CI_Controller {
                 $data['msg'] = '<div class="alert alert-danger alert-dismissible fade show" role="alert">'.$this->Mymodel->login($username, $password).'!<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
                 if ($this->session->userdata('loguserId') && $this->session->userdata('is_login')) {
                     if ($this->input->get('redirectto')) {
-                        //redirect(urldecode($this->input->get('redirectto')),'refresh');
                     } else {
                         if ($this->input->post("remember") != '' && $this->input->post("remember") == '1') {
                             setcookie("loginId", $this->input->post('username'), time() + (10 * 365 * 24 * 60 * 60));
@@ -56,13 +55,12 @@ class Login extends CI_Controller {
         }
         $this->load->view('header', $data);
         $this->load->view('login');
-        //$this->load->view('footer');
     }
     public function registrationform() {
         $role_list = $this->db->query('SELECT * FROM role WHERE status = "1"')->result();
         $data = array(
             'title' => 'Prevention Programme',
-            'page' => 'Login / Sign up',
+            'page' => 'Sign up',
             'subpage' => 'login',
             'role_list' => $role_list
         );
@@ -73,13 +71,12 @@ class Login extends CI_Controller {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $this->form_validation->set_rules('fname', 'First Name', 'required|trim');
             $this->form_validation->set_rules('lname', 'Last Name', 'required|trim');
-            $this->form_validation->set_rules('email', 'Email', 'required|valid_email|callback_email_check');
             $this->form_validation->set_rules('password', 'password', 'required|trim|min_length[6]');
             $this->form_validation->set_rules('confirm_password', 'Confirm Password', 'required|matches[password]');
             if ($this->form_validation->run() == true) {
                 $emailToken = md5($this->input->post('email')) . rand(10, 9999);
                 $data = array(
-                    'user_type' => strip_tags($this->input->post('user_type')),
+                    'user_type' => $this->input->post('user_type'),
                     'fname' => strip_tags($this->input->post('fname')),
                     'lname' => strip_tags($this->input->post('lname')),
                     'email' => strip_tags($this->input->post('email')),
@@ -89,7 +86,7 @@ class Login extends CI_Controller {
                     'email_verify_status' => '1',
                     'created_at' => date('Y-m-d H:i:s')
                 );
-                $result = $this->Mymodel->add('users', $data);
+                $result = $this->db->insert('users', $data);
                 if ($result) {
                     //add free default subscription
                     $userId = $result;
@@ -110,15 +107,16 @@ class Login extends CI_Controller {
                 $response = array(
                     'vali_error' => 1,
                     'pass_error' => form_error('password'),
-                    'cnfpass_error' => form_error('confirmpassword'),
+                    'cnfpass_error' => form_error('confirm_password'),
                     'email_error' => form_error('email'),
                     'fname_error' => form_error('fname'),
                     'lname_error' => form_error('lname')
                 );
+                //echo json_encode($response);
+                edirect(base_url() . 'signup');
             }
         }
         //echo json_encode($response);
-        redirect(base_url() . 'signup');
     }
     public function identification_document() {
         $data = array(
@@ -138,7 +136,8 @@ class Login extends CI_Controller {
         $this->load->view('header', $data);
         $this->load->view('complete_submission');
     }
-    public function email_check($str) {
+    public function email_check() {
+        $str = $this->input->post('email');
         $con = array(
             'returnType' => 'count',
             'conditions' => array(
@@ -147,13 +146,11 @@ class Login extends CI_Controller {
         );
         $checkEmail = $this->Mymodel->UniqueEmail($con);
         if ($checkEmail->num_rows() > 0) {
-            $this->form_validation->set_message('email_check', 'The given email already exists.');
-            return FALSE;
+            echo $msg = json_encode(array('error'=>'The given email already exists.'));
         } else {
-            return TRUE;
+            echo $msg = json_encode(array('success'=>'Email available'));
         }
     }
-
     function logout() {
         $user_data = $this->session->all_userdata();
         foreach ($user_data as $key => $value) {
@@ -166,13 +163,9 @@ class Login extends CI_Controller {
         $this->output->set_header("Pragma: no-cache");
         redirect(base_url() . 'login');
     }
-
     public function fblogin() {
-        // Authenticate user with facebook
         if ($this->facebook->is_authenticated()) {
-            // Get user info from facebook
             $fbUser = $this->facebook->request('get', '/me?fields=id,first_name,last_name,email,link,gender,picture');
-            // Preparing data for database insertion
             $userData['oauth_provider'] = 'facebook';
             $userData['oauth_uid'] = !empty($fbUser['id']) ? $fbUser['id'] : '';
             $userData['fname'] = !empty($fbUser['first_name']) ? $fbUser['first_name'] : '';
@@ -181,19 +174,6 @@ class Login extends CI_Controller {
             $userData['created_at'] = date('Y-m-d H:m:i');
             $userData['status'] = '1';
             $userData['email_verify_status'] = '1';
-            //$userData['gender']     = !empty($fbUser['gender'])?$fbUser['gender']:'';
-            //$userData['picture']    = !empty($fbUser['picture']['data']['url'])?$fbUser['picture']['data']['url']:'';
-            //print_r($userData);die;
-            /*$exist = $this->Mymodel->already_exist($userData['email']);
-            if($exist > 0){
-                $already_account =  '<div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <p>You already have an account. Please sign in with the email and password you used when you signed up.</p>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>';
-                $this->session->set_flashdata('already_account', $already_account);
-                redirect(base_url('login'),'refresh');
-                exit();
-            }*/
             $exist = $this->Mymodel->already_exist($userData['email']);
             if (!empty($exist)) {
                 if ($exist->oauth_provider == 'facebook') {
@@ -209,7 +189,6 @@ class Login extends CI_Controller {
                 }
             }
             $userID = $this->Mymodel->Facebook_Login($userData);
-            // Check user data insert or update status
             if (!empty($userID)) {
                 $getResult = $this->db->query("select id from users where id = " . $userID . "")->row();
                 $this->session->set_userdata('is_login', true);
@@ -224,11 +203,9 @@ class Login extends CI_Controller {
                     redirect(base_url('dashboard'), 'refresh');
                 }
             } else {
-                //$data['userData'] = array();
                 $this->session->set_flashdata('login_fail', 'Please enter correct details...');
                 redirect(base_url() . 'login');
             }
-            // Facebook logout URL
             $data['logoutURL'] = $this->facebook->logout_url();
         }
     }

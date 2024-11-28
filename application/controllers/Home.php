@@ -23,9 +23,9 @@ class Home extends CI_Controller {
 		$data['process'] = ($query->num_rows() > 0) ? $query->result() : FALSE;
 		$query = $this->db->query("select * from banner_block where status = '1'");
 		$data['banner'] = ($query->num_rows() > 0) ? $query->row() : FALSE;
-		$this->load->view('header_front', $data);
-		$this->load->view('home');
-		$this->load->view('footer_front');
+		$this->load->view('frontend/header_front', $data);
+		$this->load->view('frontend/home');
+		$this->load->view('frontend/footer_front');
 	}
     public function event_details() {
 		$data = array(
@@ -41,5 +41,34 @@ class Home extends CI_Controller {
 		$this->load->view('header', $data);
 		$this->load->view('eventdetails');
 		$this->load->view('footer');
+	}
+    public function states_by_country() {
+		$c_name = $this->input->post('country_name');
+		$get_cid = $this->db->query("SELECT * FROM countries WHERE name = '".$c_name."'")->result_array();
+		$state_list = $this->db->query("SELECT * FROM states WHERE country_id = '".$get_cid[0]['id']."'")->result_array();
+		if(!empty($state_list)) {
+			$html = "<option value=''>Select State</option>";
+			foreach ($state_list as $row_data) {
+				$html .= "<option value='".$row_data['name']."'>".ucfirst($row_data['name'])."</option>";
+			}
+		} else {
+			$html = '';
+		}
+		echo $html;
+	}
+
+	public function cities_by_state() {
+		$s_name = $this->input->post('state_name');
+		$get_sid = $this->db->query("SELECT * FROM states WHERE name = '".$s_name."'")->result_array();
+		$cities_list = $this->db->query("SELECT * FROM cities WHERE state_id = '".$get_sid[0]['id']."'")->result_array();
+		if(!empty($cities_list)) {
+			$html = "<option value=''>Select City</option>";
+			foreach ($cities_list as $row_data) {
+				$html .= "<option value='".$row_data['name']."'>".ucfirst($row_data['name'])."</option>";
+			}
+		} else {
+			$html = '';
+		}
+		echo $html;
 	}
 }
