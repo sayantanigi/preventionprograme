@@ -50,7 +50,7 @@ class Dashboard extends CI_Controller {
 			$dest = getcwd() . '/uploads/coach/profilePic/' . $avatar1;
 			if (move_uploaded_file($src, $dest)) {
 				$image  = $avatar1;
-				@unlink('uploads/coach/profilePic/' . $_POST['old_resume']);
+				@unlink('uploads/coach/profilePic/' . $_POST['old_image']);
 			}
 		} else {
 			if(!empty($_POST['old_image'])) {
@@ -59,93 +59,151 @@ class Dashboard extends CI_Controller {
 				$image  = '';
 			}
 		}
-        if(!empty($_POST['uid'])){
-            if (!empty($_FILES['backgroundPic']['size'])) {
-                $src = $_FILES['backgroundPic']['tmp_name'];
-                $filEnc = time();
-                $avatar = rand(0000, 9999) . "_" . $_FILES['backgroundPic']['name'];
-                $avatar1 = str_replace(array('(', ')', ' '), '', $avatar);
-                $dest = getcwd() . '/uploads/coach/coverPic/' . $avatar1;
-                if (move_uploaded_file($src, $dest)) {
-                    $bimage  = $avatar1;
-                }
-                if(!empty($bimage)) {
-                    $file  = $bimage;
-                } else if(!empty($_POST['old_bimage'])) {
-                    $file  = $_POST['old_bimage'];
-                } else {
-                    $file  = "";
-                }
-            }
-        } else {
-            if (!empty($_FILES['backgroundPic']['size'])) {
-                $src = $_FILES['backgroundPic']['tmp_name'];
-                $filEnc = time();
-                $avatar = rand(0000, 9999) . "_" . $_FILES['backgroundPic']['name'];
-                $avatar1 = str_replace(array('(', ')', ' '), '', $avatar);
-                $dest = getcwd() . '/uploads/coach/coverPic/' . $avatar1;
-                if (move_uploaded_file($src, $dest)) {
-                    $bimage  = $avatar1;
-                }
-                if(!empty($bimage)) {
-                    $file  = $bimage;
-                } else if(!empty($_POST['old_bimage'])) {
-                    $file  = $_POST['old_bimage'];
-                } else {
-                    $file  = "";
-                }
-            }
-        }
+        if ($_FILES['backgroundPic']['name'] != '') {
+			$src = $_FILES['backgroundPic']['tmp_name'];
+			$filEnc = time();
+			$avatar = rand(0000, 9999) . "_" . $_FILES['backgroundPic']['name'];
+			$avatar1 = str_replace(array('(', ')', ' '), '', $avatar);
+			$dest = getcwd() . '/uploads/coach/coverPic/' . $avatar1;
+			if (move_uploaded_file($src, $dest)) {
+				$bimage  = $avatar1;
+				@unlink('uploads/coach/coverPic/' . $_POST['old_bimage']);
+			}
+		} else {
+			if(!empty($_POST['old_bimage'])) {
+				$bimage  = $_POST['old_bimage'];
+			} else {
+				$bimage  = '';
+			}
+		}
         if(!empty($_POST['uid'])){
             $data = array(
-                'firstname' => $_POST['firstname'],
-                'lastname' => $_POST['lastname'],
-                'profilePic' => $image,
-                'email' => $_POST['email'],
-                'rate_enabled' => $_POST['rate_enabled'],
-                'backgroundPic' => $bimage,
-                'zip' => $_POST['zip'],
-                'short_bio' => $_POST['short_bio'],
+                'fname' => $_POST['fname'],
+                'lname' => $_POST['lname'],
+                'dob' => $_POST['dob'],
+                'phone' => $_POST['phone'],
+                'address' => $_POST['address'],
+                'address_2' => $_POST['nearby_location'],
+                'country' => $_POST['country'],
+                'state' => $_POST['state'],
+                'city' => $_POST['city'],
+                'zipcode' => $_POST['zipcode'],
+                'image' => $image,
+                'coverImage' => $bimage,
+                'about' => $_POST['about'],
             );
-            $this->Crud_model->SaveData('users', $data, "userId='" . $_POST['uid'] . "'");
-            if($_POST['from_data_request']=='admin'){
-                $this->session->set_flashdata('message', 'Profile Updated Successfull !');
-                redirect(base_url('admin/users'));
-            } else{
-                $this->session->set_flashdata('message', 'Profile Updated Successfull !');
-                redirect(base_url('homepage'));
-            }
+            $this->db->update('users', $data, "id='" . $_POST['uid'] . "'");
+            $this->session->set_flashdata('message', 'Profile Updated Successfully');
+            redirect(base_url('coach/profile_settings'));
         } else {
-            $checkUserEmail = $this->db->query("SELECT * FROM users WHERE email = '".$_POST['email']."' AND userId != '".$_SESSION['afrebay']['userId']."'")->row();
+            $checkUserEmail = $this->db->query("SELECT * FROM users WHERE email = '".$_POST['email']."' AND id != '".$this->session->userdata('loguserId')."'")->row();
             if(!empty($checkUserEmail)) {
                 $this->session->set_flashdata('error', 'Email already exists');
                 redirect(base_url('profile'));
             } else {
                 $data = array(
-                    'firstname' => $_POST['firstname'],
-                    'lastname' => $_POST['lastname'],
+                    'firstname' => $_POST['fname'],
+                    'lastname' => $_POST['lname'],
+                    'dob' => $_POST['dob'],
+                    'phone' => $_POST['phone'],
+                    'address' => $_POST['address'],
+                    'address_2' => $_POST['nearby_location'],
+                    'country' => $_POST['country'],
+                    'state' => $_POST['state'],
+                    'city' => $_POST['city'],
+                    'zipcode' => $_POST['zipcode'],
                     'profilePic' => $image,
-                    'email' => $_POST['email'],
-                    'rate_enabled' => $_POST['rate_enabled'],
-                    'backgroundPic' => $bimage,
-                    'zip' => $_POST['zip'],
-                    'short_bio' => $_POST['short_bio'],
+                    'coverImage' => $bimage,
+                    'about' => $_POST['about'],
                 );
-                $this->Crud_model->SaveData('users', $data, "userId='" . $_SESSION['afrebay']['userId'] . "'");
-                if($_POST['from_data_request']=='admin'){
-                    $this->session->set_flashdata('message', 'Profile Updated Successfull !');
-                    redirect(base_url('admin/users'));
-                }
-                else{
-                    $this->session->set_flashdata('message', 'Profile Updated Successfull !');
-                    redirect(base_url('homepage'));
-                }
+                //$this->Crud_model->SaveData('users', $data, "id='" . $this->session->userdata('loguserId') . "'");
+                $this->db->update('users', $data, "id='" . $this->session->userdata('loguserId') . "'");
+                $this->session->set_flashdata('message', 'Profile Updated Successfully');
+                redirect(base_url('coach/profile_settings'));
             }
         }
     }
-    public function msgSent() {
+    public function change_password() {
+        $data = array(
+            'password' => md5($_POST['password'])
+        );
+        $this->db->update('users', $data, "id='" . $_POST['u_id'] . "'");
+        $this->session->set_flashdata('message', 'Password Updated Successfully');
+        redirect(base_url('coach/profile_settings'));
+    }
+    public function participants() {
         $userId = $this->session->userdata('loguserId');
-        $msg = "Hello Common Message";
-        $this->Mymodel->sendMsg($userId, $msg);
+        $data = array(
+            'title' => 'Prevention Programme',
+            'page' => 'Participants Management',
+            'subpage' => 'participants',
+            'entity' => $this->db->query("SELECT * FROM health_entity WHERE status = '1' ORDER BY name ASC")->result(),
+            'participant_list' => $this->db->query("SELECT * FROM users WHERE added_by = '".$userId."'")->result()
+        );
+
+        $this->load->view('coach/header', $data);
+        $this->load->view('coach/participants');
+        $this->load->view('coach/footer');
+    }
+    public function add_participant() {
+        if ($_FILES['profilePic']['name'] != '') {
+			$src = $_FILES['profilePic']['tmp_name'];
+			$filEnc = time();
+			$avatar = rand(0000, 9999) . "_" . $_FILES['profilePic']['name'];
+			$avatar1 = str_replace(array('(', ')', ' '), '', $avatar);
+			$dest = getcwd() . '/uploads/profile/'. $avatar1;
+			if (move_uploaded_file($src, $dest)) {
+				$image  = $avatar1;
+				@unlink('uploads/profile/'. $_POST['old_image']);
+			}
+		} else {
+			if(!empty($_POST['old_image'])) {
+				$image  = $_POST['old_image'];
+			} else {
+				$image  = '';
+			}
+		}
+
+        if ($_FILES['backgroundPic']['name'] != '') {
+			$src = $_FILES['backgroundPic']['tmp_name'];
+			$filEnc = time();
+			$avatar = rand(0000, 9999) . "_" . $_FILES['backgroundPic']['name'];
+			$avatar1 = str_replace(array('(', ')', ' '), '', $avatar);
+			$dest = getcwd() . '/uploads/profile/'. $avatar1;
+			if (move_uploaded_file($src, $dest)) {
+				$bimage  = $avatar1;
+				@unlink('uploads/profile/'. $_POST['old_bimage']);
+			}
+		} else {
+			if(!empty($_POST['old_bimage'])) {
+				$bimage  = $_POST['old_bimage'];
+			} else {
+				$bimage  = '';
+			}
+		}
+
+        $data = array(
+            'user_type' => '1',
+            'fname' => $_POST['fname'],
+            'lname' => $_POST['lname'],
+            'email' => $_POST['email'],
+            'dob' => $_POST['dob'],
+            'phone' => $_POST['phone'],
+            'phone_2' => $_POST['phone_2'],
+            'health_etity' => $_POST['health_etity'],
+            'clinic' => $_POST['clinic'],
+            'provider' => $_POST['provider'],
+            'insurance_provider' => $_POST['insurance_provider'],
+            'image' => $image,
+            'coverImage' => $bimage,
+            'status' => $_POST['status'],
+            'password' => md5($_POST['password']),
+            'added_by' => $_POST['uid'],
+            'participant_code' => strtotime(date('Y-m-d H:i:s')),
+            'created_at'   => date('Y-m-d H:i:s')
+        );
+        $this->db->insert('users', $data);
+        $this->session->set_flashdata('message', 'Participant added Successfully');
+        redirect(base_url('coach/participants'));
     }
 }

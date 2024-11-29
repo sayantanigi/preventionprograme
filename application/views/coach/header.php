@@ -49,7 +49,7 @@
                 </a>
             </li>
             <li>
-                <a href="" id="UpcomingEvents1">
+                <a href="<?= base_url('coach/participants')?>" id="UpcomingEvents1">
                     <img src="<?= base_url('assets/users_assets/images/NavIcon2.png'); ?>" alt="">
                     <p>Participants</p>
                 </a>

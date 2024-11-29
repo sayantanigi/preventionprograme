@@ -71,4 +71,30 @@ class Home extends CI_Controller {
 		}
 		echo $html;
 	}
+    function health_etity(){
+		$output = '<option value="">Select Clinic</option>';
+		if($_SERVER['REQUEST_METHOD'] == 'POST'){
+			$health_etity = $this->input->post('health_etity');
+			$etity = $this->db->query("select * from clinic_admin where health_entity = ".@$health_etity." AND status = '1'")->result();
+			if($etity){
+				foreach($etity as $k => $v){
+					$output.= '<option value="'.@$v->id.'">'.@$v->name.'</option>';
+				}
+			}
+		}
+		echo $output;
+	}
+    function get_clinic(){
+		$output = '<option value="">Select Provide</option>';
+		if($_SERVER['REQUEST_METHOD'] == 'POST'){
+			$clinic = $this->input->post('clinic');
+			$etity = $this->db->query("select * from provider where clinic_admin = ".@$clinic." AND status = '1'")->result();
+			if($etity){
+				foreach($etity as $k => $v){
+					$output.= '<option value="'.@$v->id.'">'.@$v->name.'</option>';
+				}
+			}
+		}
+		echo $output;
+	}
 }

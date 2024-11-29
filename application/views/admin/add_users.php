@@ -1,5 +1,5 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>    
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 <link rel="stylesheet" href="https://unpkg.com/dropzone/dist/dropzone.css" />
 <link href="https://unpkg.com/cropperjs/dist/cropper.css" rel="stylesheet"/>
 <script src="https://unpkg.com/dropzone"></script>
@@ -28,7 +28,7 @@ img {
 
 .preview {
 	overflow: hidden;
-	width: 160px; 
+	width: 160px;
 	height: 160px;
 	margin: 10px;
 	border: 1px solid red;
@@ -36,7 +36,7 @@ img {
 
 .preview1 {
 	overflow: hidden;
-	width: 160px; 
+	width: 160px;
 	height: 160px;
 	margin: 10px;
 	border: 1px solid red;
@@ -218,7 +218,7 @@ body{margin-top:20px;}
  </style>
  <div class="main-content">
    <div class="page-content">
-      <div class="container-fluid">  
+      <div class="container-fluid">
        <section class="bg-light-gray">
         <div class="container">
         <div class="row">
@@ -241,9 +241,9 @@ body{margin-top:20px;}
 
                 <div class="col-lg-6 mb-3">
                   <div class="card shadow rounded">
-                     <div class="card-body">    
+                     <div class="card-body">
                         <form id="submitform" method="post" enctype="multipart/form-data" >
-                           
+
 
                             <div class="form-group mb-2">
                                 <label class="fw-semibold  text-black">First Name</label>
@@ -260,20 +260,20 @@ body{margin-top:20px;}
                                 <input type="email" class="form-control" name="email"  id="email" required autocomplete="off">
                             </div>
                             <small id="email_error"></small>
-							
+
 							<div class="form-group mb-2">
                                 <label class="fw-semibold  text-black">Date Of Birth</label>
                                 <input type="date" class="form-control" name="dob"  id="dob" required autocomplete="off">
                             </div>
                             <small id="dob_error"></small>
-							
+
 							<div class="form-group mb-2">
                                 <label class="fw-semibold  text-black">Phone</label>
                                 <input type="number" class="form-control" name="phone"  id="phone" required autocomplete="off">
                             </div>
                             <small id="phone_error"></small>
-							
-							
+
+
 							<div class="form-group mb-2">
                                 <label class="fw-semibold  text-black">Select Health Entity</label>
                                 <select class="form-control" name="health_etity" required id="health_etity">
@@ -286,40 +286,40 @@ body{margin-top:20px;}
 										}
 									?>
                                 </select>
-								
+
                             </div>
-							
+
 							<div class="form-group mb-2">
                                 <label class="fw-semibold  text-black">Select Clinic Admin</label>
                                 <select class="form-control" name="clinic" required id="clinic">
                                     <option value="">Select Clinic</option>
-                                   
+
                                 </select>
-								
+
                             </div>
-							
+
 							<div class="form-group mb-2">
                                 <label class="fw-semibold  text-black">Select Provider</label>
                                 <select class="form-control" name="provider" required id="provider">
                                     <option value="">Select Provider</option>
-                                   
+
                                 </select>
-								
+
                             </div>
-							
-							
+
+
 							<div class="form-group mb-2">
                                 <label class="fw-semibold  text-black">Insurance Provider</label>
                                 <input type="text" class="form-control" name="insurance_provider"  id="insurance_provider" required autocomplete="off">
                             </div>
 							<small id="insurance_provider_error"></small>
-							
+
 							<div class="form-group mb-2 files">
                                 <label class="fw-semibold  text-black">Profile Image</label>
                                 <input type="file" class="form-control" name="upload_image"  id="upload_image" >
                                 <input type="hidden" class="form-control" name="profileImg"  id="profileImg" >
                             </div>
-							
+
                             <div class="form-group mb-2">
                                 <label class="fw-semibold  text-black">Status</label>
                                 <select class="form-control" name="status" required id="userstatus">
@@ -335,62 +335,62 @@ body{margin-top:20px;}
                                 <input type="password" class="form-control" name="password"  id="password" required autocomplete="off">
                             </div>
 							<small id="pass_error"></small>
-							
+
 							<div class="form-group mb-2">
                                 <label class="fw-semibold  text-black">Confirm Password</label>
                                 <input type="password" class="form-control" name="confirm_password"  id="confirm_password" required autocomplete="off">
                             </div>
                             <small id="cnfpass_error"></small>
-							
+
                             <div class="form-group mt-3 mb-2">
                                 <button class="btn btn-success text-uppercase px-5 shadow">Submit</button>
                                 <a class="btn btn-danger waves-effect waves-light m-l-30" href="javascript:history.go(-1)">Back</a>
                             </div>
-							
-							
+
+
                         </form>
                      </div>
-                  </div>      
+                  </div>
                 </div>
-                
+
                 <div class="col-lg-6 mb-3">
                     <div class="card shadow rounded">
                         <div class="card-body">
                             <div class="row">
 							<div class="container">
 									<div class="col-md-12">
-										<div class="profile clearfix">                            
+										<div class="profile clearfix">
 											<div class="image item" id="Cover-Image">
 											    <img src="<?= !empty(@$user->cover_image) ? base_url('uploads/cover_image/'.@$user->cover_image.'') : base_url('uploads/bnr.jpg'); ?>" class="img-cover">
-											</div>                            
+											</div>
 											<div class="user clearfix">
 												<div class="avatar item" id="item">
 													<img src="<?= base_url('uploads/unnamed.jpg') ?>" class="img-thumbnail img-profile" id="blah">
-												</div>                                
-												<h2><span id="f-name"><?=@$user->first_name; ?></span> <span id="l-name"><?=@$user->last_name; ?></span></h2>                                
-												                                                                                              
-											</div>                          
+												</div>
+												<h2><span id="f-name"><?=@$user->first_name; ?></span> <span id="l-name"><?=@$user->last_name; ?></span></h2>
+
+											</div>
 											<div class="info">
-																					
-											</div>                              
+
+											</div>
 										</div>
 									</div>
 								</div>
-								
+
                                 <div class="col-lg-12 mb-3">
-                                   
+
 									<div class="card rounded">
 									<div class="card-body">
-									
+
 									<div class="mt-3"> <label class="tx-11 font-weight-bold mb-0 "><h6>First Name</h6></label><p class="text-muted" id="first_name"></p></div>
-									
+
 									<div class="mt-3"> <label class="tx-11 font-weight-bold mb-0 "><h6>Last Name</h6></label><p class="text-muted" id="last_name"></p></div>
-									
+
 									<div class="mt-3"> <label class="tx-11 font-weight-bold mb-0 "><h6>Email</h6></label><p class="text-muted" id="individual_email"></p></div>
-									
-									
+
+
 									<div class="mt-3"> <label class="tx-11 font-weight-bold mb-0 "><h6>Status</h6></label><p class="text-muted" id="individual_status"></p></div>
-									
+
 									</div>
 									</div>
                                 </div>
@@ -398,7 +398,7 @@ body{margin-top:20px;}
                         </div>
                     </div>
 
-                      
+
                 </div>
 
 
@@ -464,23 +464,23 @@ body{margin-top:20px;}
 	</div>
 </div>
 <link href='<?php echo base_url(); ?>assets/chosen/chosen.min.css' rel='stylesheet' type='text/css'>
-<script src='<?php echo base_url(); ?>assets/chosen/chosen.jquery.min.js' type='text/javascript'></script> 
+<script src='<?php echo base_url(); ?>assets/chosen/chosen.jquery.min.js' type='text/javascript'></script>
  <script>
     var owl_image_Arr = [];
 
     function preview_image(upload_type) {
         if(upload_type == 'upload'){
-           var total_file = document.getElementById("upload_image").files.length;   
+           var total_file = document.getElementById("upload_image").files.length;
         }else{
-           var total_file = owl_image_Arr.length;   
+           var total_file = owl_image_Arr.length;
         }
-        
+
         var owl_image = '';
-        
+
         if(total_file==0){
            owl_image += '<div class="item">'+
                             '<img src="<?= base_url('dist/images/noimage.jpg') ?>" class="owl-img-fluid">'+
-                        '</div>';   
+                        '</div>';
         }else{
            for(var i=0;i<total_file;i++){
               if(upload_type == 'upload'){
@@ -490,7 +490,7 @@ body{margin-top:20px;}
               }else{
                  var image_src = owl_image_Arr[i];
               }
-              
+
               /*owl_image += '<div class="item">'+
                                 '<img src="'+image_src+'" class="owl-img-fluid">'+
                                 '<a href="javascript:void(0);" class="closeimg" data-index="'+i+'"><i class="fa fa-times"></i></a>'+
@@ -498,20 +498,20 @@ body{margin-top:20px;}
 
               owl_image += '<div class="item">'+
                                 '<img src="'+image_src+'" class="owl-img-fluid">'+
-                            '</div>';                        
+                            '</div>';
            }
         }
-        
+
         owl.trigger('replace.owl.carousel', [owl_image]);
         owl.trigger('refresh.owl.carousel');
    }
-   
+
 
     //HANDLING CHECKOUT FORM
      $(document).on('submit', '#manage_deal_form', function(e){
          e.preventDefault();
-         var from = $("input[name=deal_start_date]").val(); 
-         var to =$("input[name=deal_end_date]").val(); 
+         var from = $("input[name=deal_start_date]").val();
+         var to =$("input[name=deal_end_date]").val();
 
                 if(Date.parse(from) > Date.parse(to)){
                     var errorRspnsArr = ["Deal End Date must be greater than Start Date!",'error','#DD6B55'];
@@ -541,7 +541,7 @@ body{margin-top:20px;}
             return false;
          }else{
 
-             //Throwing ajax request in server 
+             //Throwing ajax request in server
              $.ajax({
               url: adminUrl+'deals/create',
               method:'POST',
@@ -549,48 +549,48 @@ body{margin-top:20px;}
               contentType:false,
               processData:false,
               beforeSend: function() {
-                 
+
               },
               success:function(resposeData){
                  var data = JSON.parse(resposeData);
                  //console.log(data);
                  if(data.check == 'success'){
                    var responseArr = [data.msg,'success','#A5DC86'];
-                   //var redirectURL = adminUrl+'vendors/edit/'+data.vendorId;    
+                   //var redirectURL = adminUrl+'vendors/edit/'+data.vendorId;
                    var redirectURL = adminUrl+'deals/lists';
                    alert_response(responseArr,redirectURL);
-                   return true; 
+                   return true;
                  }else{
                     var responseArr = [data.msg,'error','#DD6B55'];
                     //var redirectURL = adminUrl+'vendors/edit/'+data.vendorId;
-                    var redirectURL = adminUrl+'deals/lists';   
+                    var redirectURL = adminUrl+'deals/lists';
                     alert_response(responseArr,redirectURL);
                     return false;
                  }
               }
             });
-         }    
+         }
     });
 $(document).ready(function(){
 	$("#submitform").on('submit', function(e){
 		e.preventDefault();
-		var form_data = new FormData(); 	
-		//var profile_image = $("#upload_image").prop("files")[0]; 
-		
-		var fname = $('#fname').val(); 
-		var lname = $('#lname').val(); 
+		var form_data = new FormData();
+		//var profile_image = $("#upload_image").prop("files")[0];
+
+		var fname = $('#fname').val();
+		var lname = $('#lname').val();
 		var email = $('#email').val();
-        var confirm_password = $('#confirm_password').val(); 
-		var password = $('#password').val(); 
+        var confirm_password = $('#confirm_password').val();
+		var password = $('#password').val();
 		var status = $('#userstatus').val();
 		var dob = $('#dob').val();
-		var profileImg = $('#profileImg').val(); 
-		var health_etity = $('#health_etity').val(); 
-		var clinic = $('#clinic').val(); 
-		var provider = $('#provider').val(); 
-		var insurance_provider = $('#insurance_provider').val(); 
-		var phone = $('#phone').val(); 
-		
+		var profileImg = $('#profileImg').val();
+		var health_etity = $('#health_etity').val();
+		var clinic = $('#clinic').val();
+		var provider = $('#provider').val();
+		var insurance_provider = $('#insurance_provider').val();
+		var phone = $('#phone').val();
+
 
 		form_data.append("fname", fname);
 		form_data.append("lname", lname);
@@ -605,7 +605,7 @@ $(document).ready(function(){
 		form_data.append("provider", provider);
 		form_data.append("insurance_provider", insurance_provider);
 		form_data.append("phone", phone);
-		
+
 		$.ajax({
 		type: 'POST',
 		url: '<?php echo base_url('admin/users/addUser'); ?>',
@@ -620,7 +620,7 @@ $(document).ready(function(){
 		success: function(data){
 			if(data.status == 1){
 				swal({title: "Sucess!", text: "<strong>"+data.message+"</strong>", type: "success", showConfirmButton: true, html:true}, function(){ window.location.href = " "});
-				 
+
 			}
 			if(data.status == 0){
 				swal({title: "Fail!", text: "<strong>"+data.message+"</strong>", type: "error", showConfirmButton: true, html:true}, function(){ window.location.href = " "});
@@ -631,43 +631,43 @@ $(document).ready(function(){
 				}else{
 					$('#pass_error').html('');
 				}
-				
+
 				if(data.cnfpass_error != ''){
 					$('#cnfpass_error').html(data.cnfpass_error);
 				}else{
 					$('#cnfpass_error').html('');
 				}
-				
+
 				if(data.email_error != ''){
 					$('#email_error').html(data.email_error);
 				}else{
 					$('#email_error').html('');
 				}
-				
+
 				if(data.fname_error != ''){
 					$('#fname_error').html(data.fname_error);
 				}else{
 					$('#fname_error').html('');
 				}
-				
+
 				if(data.lname_error != ''){
 					$('#lname_error').html(data.lname_error);
 				}else{
 					$('#lname_error').html('');
 				}
-				
+
 				if(data.status_error != ''){
 					$('#status_error').html(data.status_error);
 				}else{
 					$('#status_error').html('');
 				}
-				
+
 				if(data.dob_error != ''){
 					$('#dob_error').html(data.dob_error);
 				}else{
 					$('#dob_error').html('');
 				}
-				
+
 			}
 		}
 		});
@@ -678,51 +678,51 @@ $(document).ready(function(){
 
  $(document).on('keyup','#fname',function(e){
         var fname = $(this).val();
-        
+
         if(fname){
           $("#first_name").text(fname);
           $("#f-name").text(fname);
         }else{
-         
+
           $("#first_name").text('First Name');
         }
     });
 	 $(document).on('keyup','#lname',function(e){
         var lname = $(this).val();
-        
+
         if(lname){
           $("#last_name").text(lname);
           $("#l-name").text(lname);
         }else{
-         
+
           $("#last_name").text('Last Name');
         }
     });
-	
+
 	$(document).on('keyup','#email',function(e){
         var email = $(this).val();
-        
+
         if(email){
           $("#individual_email").text(email);
         }else{
-         
+
           $("#individual_email").text('Email');
         }
     });
-	
+
 	$(document).on('keyup','#phone',function(e){
         var phone = $(this).val();
-        
+
         if(phone){
           $("#individual_phone").text(phone);
         }else{
-         
+
           $("#individual_phone").text('phone');
         }
     });
 	$(document).on('change','#sport',function(e){
         var sport = $(this).val();
-		
+
        $.ajax({
 		type: 'POST',
 		url: '<?php echo base_url('admin/users/getSport_byId'); ?>',
@@ -731,12 +731,12 @@ $(document).ready(function(){
 			$("#individual_sport").text(data);
 		}
 		});
-        
+
     });
-	
+
 	$(document).on('change','#userstatus',function(e){
         var status = $(this).val();
-        
+
         if(status == 1){
           $("#individual_status").text('Active');
         }
@@ -744,7 +744,7 @@ $(document).ready(function(){
           $("#individual_status").text('Inactive');
         }
     });
-	
+
 upload_image.onchange = evt => {
 const [file] = upload_image.files
 if (file) {
@@ -752,7 +752,7 @@ blah.src = URL.createObjectURL(file)
 }
 }
 
- </script> 
+ </script>
  <script src="<?= base_url()?>assets/plugins/smt-img-upld/js/singleimage-uploader.js"></script>
  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCtg6oeRPEkRL9_CE-us3QdvXjupbgG14A&libraries=places"></script>
   <script>
@@ -841,7 +841,7 @@ $(document).ready(function(){
 					{
 						$modal.modal('hide');
 						console.log(data)
-						
+
 						//$('#blah').attr('src', '<?php echo base_url()?>'+data+'');
 						$('#item img').attr('src', '<?php echo base_url(); ?>uploads/profile/' + data);
 						$('#profileImg').val(data);
@@ -850,7 +850,7 @@ $(document).ready(function(){
 			};
 		});
 	});
-	
+
 });
 </script>
 <script>
@@ -917,17 +917,17 @@ $(document).ready(function(){
 					{
 						$modal.modal('hide');
 						console.log(data)
-						
+
 						//$('#blah').attr('src', '<?php echo base_url()?>'+data+'');
 						$('#Cover-Image img').attr('src', '<?php echo base_url(); ?>uploads/cover_image/' + data);
-						
+
 						$('#coverImg').val(data);
 					}
 				});
 			};
 		});
 	});
-	
+
 });
 
 function profile_closeModal(){
@@ -939,7 +939,7 @@ function cover_closeModal(){
 
 $(document).on('change','#health_etity',function(e){
 	var health_etity = $(this).val();
-	
+
    $.ajax({
 	type: 'POST',
 	url: '<?php echo base_url('admin/users/health_etity'); ?>',
@@ -948,12 +948,12 @@ $(document).on('change','#health_etity',function(e){
 		$("#clinic").html(data);
 	}
 	});
-	
+
 });
 
 $(document).on('change','#clinic',function(e){
 	var clinic = $(this).val();
-	
+
    $.ajax({
 	type: 'POST',
 	url: '<?php echo base_url('admin/users/get_clinic'); ?>',
@@ -962,6 +962,6 @@ $(document).on('change','#clinic',function(e){
 		$("#provider").html(data);
 	}
 	});
-	
+
 });
 </script>

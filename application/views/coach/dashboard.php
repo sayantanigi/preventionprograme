@@ -2,7 +2,7 @@
     <div class="container-fluid m-0 Section Home">
         <div class="row m-0 HomeTab">
             <div class="col-lg-2 col-md-2 col-sm-6">
-                <a href="" id="Promotion">
+                <a href="<?= base_url('coach/participants')?>" id="Promotion">
                     <img class="InActiveImg" src="<?= base_url('assets/users_assets/images/Icon9.png') ?>" alt="">
                     <img class="ActiveImg" src="<?= base_url('assets/users_assets/images/Icon15.png') ?>" alt="">
                     <p>Participants Management</p>

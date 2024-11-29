@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
-class Users extends CI_Controller 
+class Users extends CI_Controller
 {
 
 	public function __construct()
@@ -19,18 +19,18 @@ class Users extends CI_Controller
 			'page' => 'Participants List',
 			'subpage' => 'users',
 		);
-      
-      
+
+
         $data['userlist'] = $this->Adminmodel->get_all_record('id, fname, lname, email, phone, address, status, image, email_verify_status, sub_id, customize_payment', 'users', array('user_type' => 1), array('id', 'DESC'), '');
-		
+
 		$data['user_subscription'] = $this->Adminmodel->get_all_record('id, name', 'subscription', array('status' => '1'), array('name', 'ASC'), '');
-		
+
 		$this->load->view('admin/header', $data);
 		$this->load->view('admin/sidebar');
 		$this->load->view('admin/users');
 		$this->load->view('admin/footer');
 	}
-	
+
 	public function view($id)
 	{
 		$data = array(
@@ -39,13 +39,13 @@ class Users extends CI_Controller
 			'subpage' => 'users',
 		);
         $data['user'] = $this->Adminmodel->get_by('users', 'single', array('id' => $id), '', 1);
-		
+
 		$this->load->view('admin/header', $data);
 		$this->load->view('admin/sidebar');
 		$this->load->view('admin/view_users');
 		$this->load->view('admin/footer');
 	}
-	
+
 	public function add()
 	{
 		$data = array(
@@ -63,14 +63,14 @@ class Users extends CI_Controller
 		if($_SERVER['REQUEST_METHOD'] == 'POST'){
 			$this->form_validation->set_rules('password', 'password', 'required|trim|min_length[8]');
 			$this->form_validation->set_rules('confirm_password', 'Confirm Password', 'required|matches[password]');
-			$this->form_validation->set_rules('email', 'Email', 'required|valid_email|callback_email_check'); 
-			$this->form_validation->set_rules('fname', 'First Name', 'required|trim'); 
-			$this->form_validation->set_rules('lname', 'Last Name', 'required|trim'); 
-			$this->form_validation->set_rules('status', 'Status', 'required|trim'); 
-			$this->form_validation->set_rules('dob', 'Date of Birth', 'required|trim'); 
-			if($this->form_validation->run() == true){ 
+			$this->form_validation->set_rules('email', 'Email', 'required|valid_email|callback_email_check');
+			$this->form_validation->set_rules('fname', 'First Name', 'required|trim');
+			$this->form_validation->set_rules('lname', 'Last Name', 'required|trim');
+			$this->form_validation->set_rules('status', 'Status', 'required|trim');
+			$this->form_validation->set_rules('dob', 'Date of Birth', 'required|trim');
+			if($this->form_validation->run() == true){
 			    if(!empty($this->input->post('profileImg'))){
-					$data = array(					
+					$data = array(
 						'fname' => strip_tags($this->input->post('fname')),
 						'lname' => strip_tags($this->input->post('lname')),
 						'email' => strip_tags($this->input->post('email')),
@@ -87,10 +87,10 @@ class Users extends CI_Controller
 						'email_verify_status' => '1',
 						'created_at'   => date('Y-m-d H:i:s')
 					);
-					
+
 					$result= $this->Adminmodel->add('users', $data);
 					if($result){
-						
+
 						$response['status'] = 1;
 						$response['message'] = 'Participants added successfully.';
 					}else{
@@ -98,7 +98,7 @@ class Users extends CI_Controller
 						$response['message'] = 'Some error occurred.Please try again.';
 					}
 				}else{
-					$data = array(					
+					$data = array(
 						'fname' => strip_tags($this->input->post('fname')),
 						'lname' => strip_tags($this->input->post('lname')),
 						'email' => strip_tags($this->input->post('email')),
@@ -114,17 +114,17 @@ class Users extends CI_Controller
 						'email_verify_status' => '1',
 						'created_at'   => date('Y-m-d H:i:s')
 					);
-					
+
 					$result= $this->Adminmodel->add('users', $data);
 					if($result){
-						
+
 						$response['status'] = 1;
 						$response['message'] = 'Participants added successfully.';
 					}else{
 						$response['status'] = 0;
 						$response['message'] = 'Some error occurred.Please try again.';
 					}
-				}   
+				}
 		}else{
 			$response = array(
 				'vali_error'   => 1,
@@ -140,47 +140,47 @@ class Users extends CI_Controller
 		}
 		echo json_encode($response);
 	}
-	
-	 public function email_check($str){ 
-        $con = array( 
-            'returnType' => 'count', 
-            'conditions' => array( 
-                'email' => $str 
-            ) 
-        ); 
-        $checkEmail = $this->Adminmodel->UniqueEmail($con); 
-		if($checkEmail->num_rows() > 0){ 
-            $this->form_validation->set_message('email_check', 'The given email already exists.'); 
-            return FALSE; 
-        }else{ 
-            return TRUE; 
-        } 
+
+	 public function email_check($str){
+        $con = array(
+            'returnType' => 'count',
+            'conditions' => array(
+                'email' => $str
+            )
+        );
+        $checkEmail = $this->Adminmodel->UniqueEmail($con);
+		if($checkEmail->num_rows() > 0){
+            $this->form_validation->set_message('email_check', 'The given email already exists.');
+            return FALSE;
+        }else{
+            return TRUE;
+        }
     }
-	
-	public function recruiter_email_check($str){ 
-        $con = array( 
-            'returnType' => 'count', 
-            'conditions' => array( 
-                'email' => $str 
-            ) 
-        ); 
-        $checkEmail = $this->Adminmodel->UniqueEmail($con); 
-		if($checkEmail->num_rows() > 0){ 
-            $this->form_validation->set_message('recruiter_email_check', 'The given email already exists.'); 
-            return FALSE; 
-        }else{ 
+
+	public function recruiter_email_check($str){
+        $con = array(
+            'returnType' => 'count',
+            'conditions' => array(
+                'email' => $str
+            )
+        );
+        $checkEmail = $this->Adminmodel->UniqueEmail($con);
+		if($checkEmail->num_rows() > 0){
+            $this->form_validation->set_message('recruiter_email_check', 'The given email already exists.');
+            return FALSE;
+        }else{
 			 $eLength = strlen($str) - 1;
 			 $local = substr($str, $eLength - 3, $eLength );
 			  if($local === '.edu'){
-				 return TRUE; 
+				 return TRUE;
 			  }else{
-				$this->form_validation->set_message('recruiter_email_check', 'The given email address must end in .edu.'); 
-				return FALSE; 
+				$this->form_validation->set_message('recruiter_email_check', 'The given email address must end in .edu.');
+				return FALSE;
 			  }
-            
-        } 
+
+        }
     }
-	
+
 	public function edit($id)
 	{
 		$data = array(
@@ -191,41 +191,41 @@ class Users extends CI_Controller
 
         $data['user'] = $this->Adminmodel->get_by('users', 'single', array('id' => $id), '', 1);
 		$data['entity'] = $this->Adminmodel->get_all_record('*', 'health_entity', array('status' => '1'), array('name', 'ASC'), '');
-		
+
 		if($data['user']->health_etity){
 			$data['clinicAdmin'] = $this->Adminmodel->get_all_record('*', 'clinic_admin', array('health_entity' => $data['user']->health_etity), array('name', 'ASC'), '');
 		}else{
 			$data['clinicAdmin'] = '';
 		}
-		
+
 		if($data['user']->clinic){
 			$data['provider'] = $this->Adminmodel->get_all_record('*', 'provider', array('clinic_admin' => $data['user']->clinic), array('name', 'ASC'), '');
 		}else{
 			$data['provider'] = '';
 		}
-		
-		
+
+
 		//print_r($data['clinicAdmin']);die;
-		
+
 		$this->load->view('admin/header', $data);
 		$this->load->view('admin/sidebar');
 		$this->load->view('admin/edit_users');
 		$this->load->view('admin/footer');
 	}
-	
+
 	public function editIndividuals(){
 		if($_SERVER['REQUEST_METHOD'] == 'POST'){
 			$userId = $this->input->post('userId');
 			// $recruiterInfo = $this->Adminmodel->get_by('users', 'single', array('id' => $userId), '', 1);
 			// if($recruiterInfo->email != strip_tags($this->input->post('email'))){
-			    // $this->form_validation->set_rules('email', 'Email', 'required|valid_email|callback_email_check'); 
+			    // $this->form_validation->set_rules('email', 'Email', 'required|valid_email|callback_email_check');
 			// } else {
-			    // $this->form_validation->set_rules('email', 'Email', 'required|valid_email'); 
+			    // $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
 			// }
-			$this->form_validation->set_rules('fname', 'First Name', 'required|trim'); 
-			$this->form_validation->set_rules('lname', 'Last Name', 'required|trim'); 
-			$this->form_validation->set_rules('status', 'Status', 'required|trim'); 
-			$this->form_validation->set_rules('dob', 'Date of Birth', 'required|trim'); 
+			$this->form_validation->set_rules('fname', 'First Name', 'required|trim');
+			$this->form_validation->set_rules('lname', 'Last Name', 'required|trim');
+			$this->form_validation->set_rules('status', 'Status', 'required|trim');
+			$this->form_validation->set_rules('dob', 'Date of Birth', 'required|trim');
 			if($this->form_validation->run() == true){
 				if(!empty($this->input->post('profileImg'))){
 					$data = array(
@@ -253,7 +253,7 @@ class Users extends CI_Controller
 					}
 
 				}else{
-					
+
 					//echo date('Y-m-d', strtotime($this->input->post('dob')));die;
 					$data = array(
 						'fname' => strip_tags($this->input->post('fname')),
@@ -292,7 +292,7 @@ class Users extends CI_Controller
 		}
 		echo json_encode($response);
 	}
-	
+
 	function deleteUser($id){
 		if(empty($id)){
 			return false;
@@ -308,10 +308,10 @@ class Users extends CI_Controller
 			redirect(base_url('admin/users'),'refresh');
 		}
 	}
-	
-	
-	
-	
+
+
+
+
 	public function profile($id)
 	{
 		$data = array(
@@ -331,7 +331,7 @@ class Users extends CI_Controller
 			$data['statelist'] = $this->Adminmodel->get_all_record('*', 'state', array('country_id' => $data['profile']->country), array('state_name', 'ASC'), '');
 			//print_r($data['statelist']);
 		}
-		
+
 		if(!empty($data['profile']->state)){
 			$data['citylist'] = $this->Adminmodel->get_all_record('*', 'city', array('state_id' => $data['profile']->state), array('city_name', 'ASC'), '');
 			//print_r($data['statelist']);
@@ -343,7 +343,7 @@ class Users extends CI_Controller
 		$this->load->view('admin/user_profile');
 		$this->load->view('admin/footer');
 	}
-	
+
 	public function changestatus()
 	{
 		if ($this->input->post('userId')) {
@@ -354,7 +354,7 @@ class Users extends CI_Controller
 			} else {
 				$msg = 'Your status is Inctivate';
 			}
-			
+
 			if ($this->Adminmodel->update(['status'=>$status], 'users', ['id'=>$userId])) {
 				echo '["'.$msg.'", "success", "#A5DC86"]';
 			} else {
@@ -362,7 +362,7 @@ class Users extends CI_Controller
 			}
 		}
 	}
-	
+
 	public function customizePaychangestatus()
 	{
 		if ($this->input->post('userId')) {
@@ -373,7 +373,7 @@ class Users extends CI_Controller
 			} else {
 				$msg = 'Your customize payment status is Inctivate';
 			}
-			
+
 			if ($this->Adminmodel->update(['customize_payment'=>$status], 'users', ['id'=>$userId])) {
 				echo '["'.$msg.'", "success", "#A5DC86"]';
 			} else {
@@ -381,7 +381,7 @@ class Users extends CI_Controller
 			}
 		}
 	}
-	
+
 	function health_coach(){
 		$data = array(
 			'title' => 'Health Coach List',
@@ -389,12 +389,12 @@ class Users extends CI_Controller
 			'subpage' => 'health-coach',
 			//'redirect' => 'lists'
 		);
-      
-      
-		
+
+
+
         $data['userlist'] = $this->Adminmodel->get_all_record('*', 'users', array('user_type' => 2), array('id', 'DESC'), '');
-		
-		
+
+
 		$this->load->view('admin/header', $data);
 		$this->load->view('admin/sidebar');
 		$this->load->view('admin/team_coach');
@@ -419,9 +419,9 @@ class Users extends CI_Controller
 		if($_SERVER['REQUEST_METHOD'] == 'POST'){
 			$this->form_validation->set_rules('password', 'password', 'required|trim|min_length[8]');
 			$this->form_validation->set_rules('confirm_password', 'Confirm Password', 'required|matches[password]');
-			$this->form_validation->set_rules('email', 'Email', 'required|valid_email|callback_email_check'); 
-			if($this->form_validation->run() == true){ 
-			
+			$this->form_validation->set_rules('email', 'Email', 'required|valid_email|callback_email_check');
+			if($this->form_validation->run() == true){
+
 					$data = array(
 						'fname' => strip_tags($this->input->post('fname')),
 						'lname' => strip_tags($this->input->post('lname')),
@@ -450,21 +450,21 @@ class Users extends CI_Controller
 					);
 					$result= $this->Adminmodel->add('users', $data);
 					if($result){
-						
+
 						if(!empty($this->input->post('coverImg'))){
 							$CoverImgdata = array('cover_image' => $this->input->post('coverImg'));
 							$this->Adminmodel->update($CoverImgdata, 'users', array('id' => $result));
 						}
-						
-						
-						
+
+
+
 						$response['status'] = 1;
 						$response['message'] = 'Health coach added successfully.';
 					}else{
 						$response['status'] = 0;
 						$response['message'] = 'Some error occurred.Please try again.';
 					}
-			
+
 		}else{
 			  $response = array(
 				'vali_error'   => 1,
@@ -476,7 +476,7 @@ class Users extends CI_Controller
 		}
 		echo json_encode($response);
 	}
-	
+
 	public function edit_teamcoach($id)
 	{
 		$data = array(
@@ -487,7 +487,7 @@ class Users extends CI_Controller
 		);
         $data['user'] = $this->Adminmodel->get_by('users', 'single', array('id' => $id), '', 1);
 		$data['entity'] = $this->Adminmodel->get_all_record('*', 'health_entity', array('status' => '1'), array('name', 'ASC'), '');
-		
+
 		if($data['user']->health_etity){
 			$data['clinicAdmin'] = $this->Adminmodel->get_all_record('*', 'clinic_admin', array('health_entity' => $data['user']->health_etity), array('name', 'ASC'), '');
 		}else{
@@ -508,13 +508,13 @@ class Users extends CI_Controller
 		    $userId = $this->input->post('userId');
 			$recruiterInfo = $this->Adminmodel->get_by('users', 'single', array('id' => $userId), '', 1);
 			if($recruiterInfo->email != strip_tags($this->input->post('email'))){
-			  $this->form_validation->set_rules('email', 'Email', 'required|valid_email|callback_email_check'); 
+			  $this->form_validation->set_rules('email', 'Email', 'required|valid_email|callback_email_check');
 			} else {
-			  $this->form_validation->set_rules('email', 'Email', 'required|valid_email'); 
+			  $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
 			}
 			if($this->form_validation->run() == true){
 			if(!empty($this->input->post('profileImg'))){
-				
+
 				$data = array(
 					'fname' => strip_tags($this->input->post('fname')),
 					'lname' => strip_tags($this->input->post('lname')),
@@ -541,15 +541,15 @@ class Users extends CI_Controller
 					'user_type' => 2,
 					'updated_at'   => date('Y-m-d H:i:s')
 				);
-						
-						
+
+
 				$result= $this->Adminmodel->update($data, 'users', array('id' => $userId));
 				if($result){
 					if(!empty($this->input->post('coverImg'))){
 						$CoverImgdata = array('cover_image' => $this->input->post('coverImg'));
 						$this->Adminmodel->update($CoverImgdata, 'users', array('id' => $userId));
 					}
-					
+
 					$response['status'] = 1;
 					$response['message'] = 'Health coach updated successfully.';
 				}else{
@@ -582,15 +582,15 @@ class Users extends CI_Controller
 					'user_type' => 2,
 					'updated_at'   => date('Y-m-d H:i:s')
 				);
-					
+
 				$result= $this->Adminmodel->update($data, 'users', array('id' => $userId));
 				if($result){
 					if(!empty($this->input->post('coverImg'))){
 						$CoverImgdata = array('cover_image' => $this->input->post('coverImg'));
 						$this->Adminmodel->update($CoverImgdata, 'users', array('id' => $userId));
 					}
-					
-						
+
+
 					$response['status'] = 1;
 					$response['message'] = 'Health coach updated successfully.';
 				}else{
@@ -604,11 +604,11 @@ class Users extends CI_Controller
 				'email_error' => form_error('email'),
 			);
 		}
-		
+
 		}
 		echo json_encode($response);
 	}
-	
+
 	public function view_teamcoach($id)
 	{
 		$data = array(
@@ -659,7 +659,7 @@ class Users extends CI_Controller
 			$data['statelist'] = $this->Adminmodel->get_all_record('*', 'state', array('country_id' => $data['profile']->country), array('state_name', 'ASC'), '');
 			//print_r($data['statelist']);
 		}
-		
+
 		if(!empty($data['profile']->state)){
 			$data['citylist'] = $this->Adminmodel->get_all_record('*', 'city', array('state_id' => $data['profile']->state), array('city_name', 'ASC'), '');
 			//print_r($data['statelist']);
@@ -671,7 +671,7 @@ class Users extends CI_Controller
 		$this->load->view('admin/teamcoach_profile');
 		$this->load->view('admin/footer');
 	}
-	
+
 	function recruiter(){
 		$data = array(
 			'title' => 'Recruiter',
@@ -679,12 +679,12 @@ class Users extends CI_Controller
 			'subpage' => 'recruiter',
 			//'redirect' => 'lists'
 		);
-      
-      // if($vendorId !=null){ 
+
+      // if($vendorId !=null){
 			// $vendor_clause = "WHERE d.is_approved='1' AND d.vendorId = '$vendorId'";
 		// }else{
 			// $vendor_clause = "WHERE d.is_approved='1'";
-		// }	
+		// }
 		// //Fetching orders and their details from db
         //$fetch_deal_sql = "select first_name, last_name, email, phone, address, status from users where user_type = 'Individual'";
 		//$data['userlist'] = $this->mymodel->get_all_record($fetch_deal_sql,false);
@@ -694,7 +694,7 @@ class Users extends CI_Controller
 		$this->load->view('admin/recruiter');
 		$this->load->view('admin/footer');
 	}
-	
+
 	function add_recruiter(){
 		$data = array(
 			'title' => 'Add Recruiter',
@@ -702,7 +702,7 @@ class Users extends CI_Controller
 			'subpage' => 'recruiter',
 			//'redirect' => 'lists'
 		);
-      
+
 		$this->load->view('admin/header', $data);
 		$this->load->view('admin/sidebar');
 		$this->load->view('admin/add_recruiter');
@@ -712,8 +712,8 @@ class Users extends CI_Controller
 		if($_SERVER['REQUEST_METHOD'] == 'POST'){
 			$this->form_validation->set_rules('password', 'password', 'required|trim|min_length[8]');
 			$this->form_validation->set_rules('confirm_password', 'Confirm Password', 'required|matches[password]');
-			$this->form_validation->set_rules('email', 'Email', 'required|valid_email|callback_recruiter_email_check'); 
-			if($this->form_validation->run() == true){ 
+			$this->form_validation->set_rules('email', 'Email', 'required|valid_email|callback_recruiter_email_check');
+			if($this->form_validation->run() == true){
 			// if(!empty($_FILES['profile_image']['name'])){
 				// $config['upload_path'] = 'uploads/profile_image'; # check path is correct
 					// $config['allowed_types'] = 'jpg|png|jpeg'; # add video extenstion on here
@@ -730,7 +730,7 @@ class Users extends CI_Controller
 					// } else {
 						// $url = $image_name;
 						// $data = array(
-							
+
 							// 'first_name' => strip_tags($this->input->post('fname')),
 						    // 'last_name' => strip_tags($this->input->post('lname')),
 							// 'email' => strip_tags($this->input->post('email')),
@@ -755,7 +755,7 @@ class Users extends CI_Controller
 					// }
 			// }else{
 					$data = array(
-						
+
 						'first_name' => strip_tags($this->input->post('fname')),
 						'last_name' => strip_tags($this->input->post('lname')),
 						'email' => strip_tags($this->input->post('email')),
@@ -793,7 +793,7 @@ class Users extends CI_Controller
 		}
 		echo json_encode($response);
 	}
-	
+
 	public function edit_recruiter($id)
 	{
 		$data = array(
@@ -812,13 +812,13 @@ class Users extends CI_Controller
 		if($_SERVER['REQUEST_METHOD'] == 'POST'){
 			// $this->form_validation->set_rules('password', 'password', 'required|trim|min_length[8]');
 			// $this->form_validation->set_rules('confirm_password', 'Confirm Password', 'required|matches[password]');
-			// $this->form_validation->set_rules('email', 'Email', 'required|valid_email|callback_email_check'); 
+			// $this->form_validation->set_rules('email', 'Email', 'required|valid_email|callback_email_check');
 			$userId = $this->input->post('userId');
 			$recruiterInfo = $this->Adminmodel->get_by('users', 'single', array('id' => $userId), '', 1);
 			if($recruiterInfo->email != strip_tags($this->input->post('email'))){
-			  $this->form_validation->set_rules('email', 'Email', 'required|valid_email|callback_recruiter_email_check'); 
+			  $this->form_validation->set_rules('email', 'Email', 'required|valid_email|callback_recruiter_email_check');
 			} else {
-			  $this->form_validation->set_rules('email', 'Email', 'required|valid_email'); 
+			  $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
 			}
 			if($this->form_validation->run() == true){
 			if(!empty($this->input->post('profileImg'))){
@@ -895,11 +895,11 @@ class Users extends CI_Controller
 				'email_error' => form_error('email'),
 				);
 		}
-		
+
 		}
 		echo json_encode($response);
 	}
-	
+
 	public function view_recruiter($id)
 	{
 		$data = array(
@@ -932,12 +932,12 @@ class Users extends CI_Controller
 			$data['statelist'] = $this->Adminmodel->get_all_record('*', 'state', array('country_id' => $data['profile']->country), array('state_name', 'ASC'), '');
 			//print_r($data['statelist']);
 		}
-		
+
 		if(!empty($data['profile']->state)){
 			$data['citylist'] = $this->Adminmodel->get_all_record('*', 'city', array('state_id' => $data['profile']->state), array('city_name', 'ASC'), '');
 			//print_r($data['statelist']);
 		}
-		
+
         $data['countrylist'] = $this->Adminmodel->get_all_record('*', 'country', '', array('country_name', 'ASC'), '');
 		$this->load->view('admin/header', $data);
 		$this->load->view('admin/sidebar');
@@ -965,7 +965,7 @@ class Users extends CI_Controller
 		    echo $this->Adminmodel->state($countryId);
 		}
 	}
-	
+
 	function city(){
 
 		if($this->input->post('state_id')){
@@ -993,7 +993,7 @@ class Users extends CI_Controller
 			$longitude = $this->input->post('longitude');
 			$pincode = $this->input->post('pincode');
 			$sport_id = $this->input->post('sport');
-			
+
 			$userInfo = array(
 				'first_name' => strip_tags($fname),
 				'last_name' => strip_tags($lname),
@@ -1019,11 +1019,11 @@ class Users extends CI_Controller
 					if($deleteAca){
 						for($i = 0; $i< count($this->input->post('college')); $i++){
 						    //$academicResult[] = $this->db->query("INSERT INTO academics (`college`, `course`, `rank`, `passing_year`, `achievement`, `user_id`, `created_at`) VALUES ('".$_POST['college'][$i]."', '".$_POST['course'][$i]."', '".$_POST['rank'][$i]."', '".$_POST['passing_year'][$i]."', '".$_POST['achievement'][$i]."', '".$userId."', '".date('Y-m-d H:i:s')."')");
-							
+
 							$academicResult[] = $this->db->query("INSERT INTO academics (`college`, `course`, `rank`, `graduation_year`, `gpa`, `act_score`, `user_id`, `created_at`) VALUES ('".$_POST['college'][$i]."', '".$_POST['course'][$i]."', '".$_POST['rank'][$i]."', '".$_POST['graduation_year'][$i]."', '".$_POST['gpa'][$i]."', '".$_POST['act_score'][$i]."', '".$userId."', '".date('Y-m-d H:i:s')."')");
 						}
 					}
-					
+
 				// $academicResult = $this->Adminmodel->update($academicsInfo, 'academics', array('id' => $userId));
 				 //$academicResult = $this->Adminmodel->update_user_data('id, user_id', 'academics', array('user_id' => $userId), $academicsInfo);
 				 if(!empty($academicResult)){
@@ -1056,7 +1056,7 @@ class Users extends CI_Controller
 								}else{
 									$start_date = NULL;
 								}
-								
+
 								if(!empty($_POST['end_date'][$i])){
 									$end_date = date('Y-m-d', strtotime($_POST['end_date'][$i]));
 								}else{
@@ -1065,8 +1065,8 @@ class Users extends CI_Controller
 							    $exprienceResult[] = $this->db->query("INSERT INTO exprience (`club_name`, `designation`, `start_date`, `end_date`, `information`, `user_id`, `created_at`) VALUES ('".$_POST['club_name'][$i]."', '".$_POST['club_designation'][$i]."', '".$start_date."', '".$end_date."', '".$_POST['information'][$i]."', '".$userId."', '".date('Y-m-d H:i:s')."')");
 							}
 						}
-						
-						
+
+
 						//$exprienceResult = $this->Adminmodel->update_user_data('id, user_id', 'exprience', array('user_id' => $userId), $exprienceInfo);
 						 if(!empty($exprienceResult)){
 							// $referenceInfo = array(
@@ -1074,7 +1074,7 @@ class Users extends CI_Controller
 								// 'coach_email' => strip_tags($this->input->post('coach_email')),
 								// 'user_id' => strip_tags($userId),
 							// );
-							
+
 							$deleteRef = $this->db->query('delete from reference where user_id = '.$userId.'');
 							if($deleteRef){
 								for($i = 0; $i< count($this->input->post('coach_name')); $i++){
@@ -1083,7 +1083,7 @@ class Users extends CI_Controller
 							}
 							//$referenceResult = $this->Adminmodel->update_user_data('id, user_id', 'reference', array('user_id' => $userId), $referenceInfo);
 							//print_r($referenceResult);die;
-							
+
 							// if(!empty($referenceResult)){
 								// $response['status'] = 1;
 								// $response['message'] = 'Profile updated successfully.';
@@ -1097,9 +1097,9 @@ class Users extends CI_Controller
 									for($i = 0; $i< count($this->input->post('guardian_name')); $i++){
 										$guardianResult[] = $this->db->query("INSERT INTO guardian (`guardian_name`, `guardian_email`, `guardian_phone`, `guardian_relation`, `user_id`, `created_at`) VALUES ('".$_POST['guardian_name'][$i]."', '".$_POST['guardian_email'][$i]."',  '".$_POST['guardian_phone'][$i]."', '".$_POST['guardian_relation'][$i]."', '".$userId."', '".date('Y-m-d H:i:s')."')");
 									}
-									
+
 								}
-								
+
 								if(!empty($referenceResult)){
 									$response['status'] = 1;
 									$response['message'] = 'Profile updated successfully.';
@@ -1107,15 +1107,15 @@ class Users extends CI_Controller
 									$response['status'] = 0;
 									$response['message'] = 'Some error ocure.Please try again.';
 								}
-								
+
 							}
-							
+
 						 }
-						 
-					}					
+
+					}
 				 }
 			}
-			
+
 		}
 		echo json_encode($response);
 	}
@@ -1127,16 +1127,16 @@ class Users extends CI_Controller
 			//'redirect' => 'lists'
 		);
         $data['userid'] = $id;
-      // // if($vendorId !=null){ 
+      // // if($vendorId !=null){
 			// // $vendor_clause = "WHERE d.is_approved='1' AND d.vendorId = '$vendorId'";
 		// // }else{
 			// // $vendor_clause = "WHERE d.is_approved='1'";
-		// // }	
+		// // }
 		// // //Fetching orders and their details from db
         // //$fetch_deal_sql = "select first_name, last_name, email, phone, address, status from users where user_type = 'Individual'";
 		// //$data['userlist'] = $this->mymodel->get_all_record($fetch_deal_sql,false);
-		
-       
+
+
 		$data['userInfo'] = $this->Adminmodel->get_by('users', 'single', array('id' => $id), '', 1);
 		$data['sportslist'] = $this->Adminmodel->get_all_record('*', 'sports', '', array('id', 'DESC'), '');
 		$this->load->view('admin/header', $data);
@@ -1144,33 +1144,33 @@ class Users extends CI_Controller
 		$this->load->view('admin/add_coach_player');
 		$this->load->view('admin/footer');
 	}
-	
+
 	function getuser_bysport(){
 		if($this->input->post('sport_id')){
 		$sportId = $this->input->post('sport_id');
 		echo $this->Adminmodel->getuser_bysport($sportId);
 		}
 	}
-	
+
 	function getrganiser_bysport(){
 		if($this->input->post('sport_id')){
 		$sportId = $this->input->post('sport_id');
 		echo $this->Adminmodel->getrganiser_bysport($sportId);
 		}
 	}
-	
+
 	function addTeamplayer(){
 		if($_SERVER['REQUEST_METHOD'] == 'POST'){
-			//$this->form_validation->set_rules('user_id', 'user', 'required|callback_check_teamplayer'); 
+			//$this->form_validation->set_rules('user_id', 'user', 'required|callback_check_teamplayer');
 			$result = $this->check_teamplayer($this->input->post('user_id'), $this->input->post('coach_id'));
-			
+
 			if($result == 'err_false'){
 				$response['status'] = $result;
 				$response['message'] = 'This player already exist in your team.';
 				echo json_encode($response);
 				return false;
 			}
-			
+
 			$data = array(
 				'coach_id' => strip_tags($this->input->post('coach_id')),
 				'player_id' => strip_tags($this->input->post('user_id')),
@@ -1188,31 +1188,31 @@ class Users extends CI_Controller
 		}
 		echo json_encode($response);
 	}
-	public function check_teamplayer($user_id = '', $coach_id = ''){ 
+	public function check_teamplayer($user_id = '', $coach_id = ''){
 	    $result = '';
-        $con = array( 
-            'returnType' => 'count', 
-            'conditions' => array( 
+        $con = array(
+            'returnType' => 'count',
+            'conditions' => array(
                 'user_id' => $user_id,
                 'coach_id' => $coach_id,
-            ) 
-        ); 
-        $checkEmail = $this->Adminmodel->UniqueTeamPlayer($con); 
-		if($checkEmail->num_rows() > 0){ 
-           $result .= 'err_false'; 
-         
-        }else{ 
-            $result .= 'err_true'; 
-        } 
+            )
+        );
+        $checkEmail = $this->Adminmodel->UniqueTeamPlayer($con);
+		if($checkEmail->num_rows() > 0){
+           $result .= 'err_false';
+
+        }else{
+            $result .= 'err_true';
+        }
 		return $result;
     }
-	
+
 	public function addnewTeamplayer(){
 		if($_SERVER['REQUEST_METHOD'] == 'POST'){
 			$this->form_validation->set_rules('password', 'password', 'required|trim|min_length[8]');
 			$this->form_validation->set_rules('confirm_password', 'Confirm Password', 'required|matches[password]');
-			$this->form_validation->set_rules('email', 'Email', 'required|valid_email|callback_email_check'); 
-			if($this->form_validation->run() == true){ 
+			$this->form_validation->set_rules('email', 'Email', 'required|valid_email|callback_email_check');
+			if($this->form_validation->run() == true){
 			// if(!empty($_FILES['profile_image']['name'])){
 				// $config['upload_path'] = 'uploads/profile_image'; # check path is correct
 					// $config['allowed_types'] = 'jpg|png|jpeg'; # add video extenstion on here
@@ -1263,7 +1263,7 @@ class Users extends CI_Controller
 					// }
 			// }else{
 					$data = array(
-						
+
 						'first_name' => strip_tags($this->input->post('fname')),
 						'last_name' => strip_tags($this->input->post('lname')),
 						'email' => strip_tags($this->input->post('email')),
@@ -1314,7 +1314,7 @@ class Users extends CI_Controller
 	function addnew_teamplayer(){
 		if($_SERVER['REQUEST_METHOD'] == 'POST'){
 			$this->form_validation->set_rules('unique_code', 'Unique Code', 'required|trim');
-			$this->form_validation->set_rules('email', 'Email', 'required|valid_email|trim'); 
+			$this->form_validation->set_rules('email', 'Email', 'required|valid_email|trim');
 			if($this->form_validation->run() == true){
 				$coachId = strip_tags($this->input->post('coach_id'));
 			        // $data = array(
@@ -1329,10 +1329,10 @@ class Users extends CI_Controller
 					echo json_encode($response);
 					exit();
 				}
-					
+
 			    require_once APPPATH.'third_party/email/vendor/autoload.php';
 				$imagePath = base_url().'uploads/logos/logo1.png';
-				$imagebackPath = '';	
+				$imagebackPath = '';
 				$message = "<!Doctype html>
 				<html>
 					<head>
@@ -1380,11 +1380,11 @@ class Users extends CI_Controller
 						$mail->Subject = 'Unique Player Code';
 						$mail->Body = $message;
 						$mail->IsSMTP();
-						$mail->SMTPAuth   = true; 
-						$mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS; 
+						$mail->SMTPAuth   = true;
+						$mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
 						$mail->Host       = "smtp.gmail.com";
-						$mail->Port       = 587;  
-						$mail->Username = 'rameshwebdev21@gmail.com';                
+						$mail->Port       = 587;
+						$mail->Username = 'rameshwebdev21@gmail.com';
 						$mail->Password = 'gqbtiijrzaljwkhz';
 						$send = $mail->send();
 						if($send == 1){
@@ -1403,8 +1403,8 @@ class Users extends CI_Controller
 						        $response['message'] = 'Some error ocure.Please try again.';
 							}
 						}
-						
-					// } catch (Exception $e) 
+
+					// } catch (Exception $e)
 					// {
 					  // $this->session->set_flashdata('error_message', "Message could not be sent. Mailer Error: {$mail->ErrorInfo}");
 					// }
@@ -1415,11 +1415,11 @@ class Users extends CI_Controller
 				'email_error' => form_error('email'),
 				);
 		    }
-			
+
 		}
 		echo json_encode($response);
 	}
-	
+
 	public function coach_team($id)
 	{
 		$data = array(
@@ -1436,7 +1436,7 @@ class Users extends CI_Controller
 		$this->load->view('admin/players_under_coach');
 		$this->load->view('admin/footer');
 	}
-	
+
 	function resendCode(){
 		if($this->input->post('id')){
 			$id = $this->input->post('id');
@@ -1444,7 +1444,7 @@ class Users extends CI_Controller
 			if($result){
 				require_once APPPATH.'third_party/email/vendor/autoload.php';
 				$imagePath = base_url().'uploads/logos/logo1.png';
-				$imagebackPath = '';	
+				$imagebackPath = '';
 				$message = "<!Doctype html>
 				<html>
 				<head>
@@ -1482,11 +1482,11 @@ class Users extends CI_Controller
 				$mail->Subject = 'Unique Player Code';
 				$mail->Body = $message;
 				$mail->IsSMTP();
-				$mail->SMTPAuth   = true; 
-				$mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS; 
+				$mail->SMTPAuth   = true;
+				$mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
 				$mail->Host       = "smtp.gmail.com";
-				$mail->Port       = 587;  
-				$mail->Username = 'rameshwebdev21@gmail.com';                
+				$mail->Port       = 587;
+				$mail->Username = 'rameshwebdev21@gmail.com';
 				$mail->Password = 'gqbtiijrzaljwkhz';
 				$send = $mail->send();
 				if($send){
@@ -1526,7 +1526,7 @@ class Users extends CI_Controller
 			echo '0';
 		}
 	}
-	
+
 	function deleteUser_expInfo(){
 		$experience = $this->input->post('experience');
 		$userId = $this->input->post('userId');
@@ -1537,7 +1537,7 @@ class Users extends CI_Controller
 			echo '0';
 		}
 	}
-	
+
 	function deleteUser_refInfo(){
 		$reference = $this->input->post('reference');
 		$userId = $this->input->post('userId');
@@ -1548,7 +1548,7 @@ class Users extends CI_Controller
 			echo '0';
 		}
 	}
-	
+
 	function deleteUser_guarInfo(){
 		$reference = $this->input->post('reference');
 		$userId = $this->input->post('userId');
@@ -1559,7 +1559,7 @@ class Users extends CI_Controller
 			echo '0';
 		}
 	}
-	
+
 	function getSport_byId(){
 		 $sportId = $this->input->post('sportId');
 		 $result = $this->db->query("select * from sports where id = ".$sportId."")->row();
@@ -1567,7 +1567,7 @@ class Users extends CI_Controller
 			 echo $result->sports_name;
 		 }
 	}
-	
+
 	function getUser_byId(){
 		 $sportId = $this->input->post('sportId');
 		 $result = $this->db->query("select * from users where id = ".$sportId."")->row();
@@ -1575,7 +1575,7 @@ class Users extends CI_Controller
 			 echo $result->first_name . $result->last_name;
 		 }
 	}
-	
+
 	function cropImage (){
 		$data = $_POST['image'];
 		$image_array_1 = explode(";", $data);
@@ -1596,7 +1596,7 @@ class Users extends CI_Controller
 		file_put_contents($image_name, $data);
 	    echo $imageName;
 	}
-	
+
 	function cropTeamimage (){
 		$data = $_POST['image'];
 		$image_array_1 = explode(";", $data);
@@ -1607,7 +1607,7 @@ class Users extends CI_Controller
 		file_put_contents($image_name, $data);
 	    echo $imageName;
 	}
-	
+
 	function qrcode(){
 		//$this->load->library('phpqrcode/qrlib.php');
 		require_once APPPATH.'third_party/phpqrcode/qrlib.php';
@@ -1616,14 +1616,14 @@ class Users extends CI_Controller
             $content = base_url('player-profile/'.$userId.'');
             $text = "0123456789abcdefghijklmnopqrstvwxyzABCDEFGHIJKLMNOPQRSTVWXYZ";
             //$text1= rand($text, 0,9);
-           	$text1=substr(str_shuffle($text), 0, 9);		
+           	$text1=substr(str_shuffle($text), 0, 9);
             $folder = $SERVERFILEPATH;
             $file_name1 = $text1."-Qrcode" . rand(2,200) . ".png";
             $file_name = $folder.$file_name1;
 			$ecc = 'H';
 			$pixel_size = 20;
 			$frame_size = 5;
-            QRcode::png($content,$file_name,$ecc, $pixel_size, $frame_size); 
+            QRcode::png($content,$file_name,$ecc, $pixel_size, $frame_size);
             //echo"<center><img src=".base_url().'data/qrcode/'.$file_name1."></center>";
 			$url = base_url().'data/qrcode/'.$file_name1;
 			$data = array('qrcode' => $url);
@@ -1646,7 +1646,7 @@ class Users extends CI_Controller
 	}
 	// function updateProfile(){
 		// if($_SERVER['REQUEST_METHOD'] == 'POST'){
-			
+
 			// $userId = $this->input->post('userId');
 			// $fname = $this->input->post('fname');
 			// $lname = $this->input->post('lname');
@@ -1694,7 +1694,7 @@ class Users extends CI_Controller
 						// }
 					// }
 				// }
-				
+
 				// $query = $this->db->query("select * from athletics where user_id = ".$userId."")->row();
 				// $athleticsInfo = array(
 					// 'feet' => !empty($this->input->post('feet')) ? $this->input->post('feet') : @$query->feet,
@@ -1727,7 +1727,7 @@ class Users extends CI_Controller
 						// }
 					// }
 			    // }
-				
+
 				// if(!empty($this->input->post('coach_name'))){
 					// $deleteRef = $this->db->query('delete from reference where user_id = '.$userId.'');
 					// if($deleteRef){
@@ -1736,32 +1736,32 @@ class Users extends CI_Controller
 						// }
 					// }
 				// }
-				// if(!empty($this->input->post('user_type')) AND $this->input->post('user_type') == 'Player'){			
+				// if(!empty($this->input->post('user_type')) AND $this->input->post('user_type') == 'Player'){
 					// if(!empty($this->input->post('guardian_name'))){
 						// $deleteGuar = $this->db->query('delete from guardian where user_id = '.$userId.'');
 						// if($deleteGuar){
 							// for($i = 0; $i< count($this->input->post('guardian_name')); $i++){
 								// $guardianResult[] = $this->db->query("INSERT INTO guardian (`guardian_name`, `guardian_email`, `guardian_phone`, `guardian_relation`, `user_id`, `created_at`) VALUES ('".$_POST['guardian_name'][$i]."', '".$_POST['guardian_email'][$i]."',  '".$_POST['guardian_phone'][$i]."', '".$_POST['guardian_relation'][$i]."', '".$userId."', '".date('Y-m-d H:i:s')."')");
 							// }
-							
-							
+
+
 						// }
 					// }
 				// }
-				
-				
+
+
 				// $response['status'] = 1;
 				// $response['message'] = 'Profile updated successfully.';
 
 			// }
-			
+
 		// }
 		// echo json_encode($response);
 	// }
-	
+
 	function updateProfile(){
 		if($_SERVER['REQUEST_METHOD'] == 'POST'){
-			
+
 			$userId = $this->input->post('userId');
 			$fname = $this->input->post('fname');
 			$lname = $this->input->post('lname');
@@ -1817,7 +1817,7 @@ class Users extends CI_Controller
 						}
 					}
 				}
-				
+
 				$query = $this->db->query("select * from athletics where user_id = ".$userId."")->row();
 				$athleticsInfo = array(
 					'feet' => !empty($this->input->post('feet')) ? trim($this->input->post('feet'), "'") : @$query->feet,
@@ -1851,7 +1851,7 @@ class Users extends CI_Controller
 						}
 					}
 			    }
-				
+
 				if(!empty($this->input->post('coach_name'))){
 					$deleteRef = $this->db->query('delete from reference where user_id = '.$userId.'');
 					if($deleteRef){
@@ -1860,36 +1860,36 @@ class Users extends CI_Controller
 						}
 					}
 				}
-				if(!empty($this->input->post('user_type')) AND $this->input->post('user_type') == 'Player'){			
+				if(!empty($this->input->post('user_type')) AND $this->input->post('user_type') == 'Player'){
 					if(!empty($this->input->post('guardian_name'))){
 						$deleteGuar = $this->db->query('delete from guardian where user_id = '.$userId.'');
 						if($deleteGuar){
 							for($i = 0; $i< count($this->input->post('guardian_name')); $i++){
 								$guardianResult[] = $this->db->query("INSERT INTO guardian (`guardian_name`, `guardian_email`, `guardian_phone`, `guardian_relation`, `user_id`, `created_at`) VALUES ('".$_POST['guardian_name'][$i]."', '".$_POST['guardian_email'][$i]."',  '".$_POST['guardian_phone'][$i]."', '".$_POST['guardian_relation'][$i]."', '".$userId."', '".date('Y-m-d H:i:s')."')");
 							}
-							
-							
+
+
 						}
 					}
 				}
-				
-				
+
+
 				$response['status'] = 1;
 				$response['message'] = 'Profile updated successfully.';
 
 			}
-			
+
 		}
 		echo json_encode($response);
 	}
-	
+
 	function updateProfileCoach(){
 		if($_SERVER['REQUEST_METHOD'] == 'POST'){
-			
+
 			$userId = $this->input->post('userId');
 			$fname = $this->input->post('fname');
 			$lname = $this->input->post('lname');
-			
+
 			$email = $this->input->post('email');
 			$phone = $this->input->post('phone');
 			$address = $this->input->post('address');
@@ -1926,27 +1926,27 @@ class Users extends CI_Controller
 					'updated_at' => date('Y-m-d H:i:s')
 				);
 				$result= $this->Adminmodel->update($userInfodata, 'users', array('id' => $userId));
-				
+
 				if(!empty($this->input->post('cover_image'))){
 					$CoverImgdata = array('cover_image' => $this->input->post('cover_image'));
 					$this->Adminmodel->update($CoverImgdata, 'users', array('id' => $userId));
 				}
-				
+
 				if(!empty($this->input->post('profileImg'))){
 					$CoverImgdata = array('profile_image' => $this->input->post('profileImg'));
 					$this->Adminmodel->update($CoverImgdata, 'users', array('id' => $userId));
 				}
-				
+
 				if(!empty($this->input->post('teamImg'))){
 					$teamImgdata = array('team_image' => $this->input->post('teamImg'));
 					$this->Adminmodel->update($teamImgdata, 'users', array('id' => $userId));
 				}
-				
+
 				if(!empty($this->input->post('teamcoverImg'))){
 					$teamcoverImgdata = array('teamcover_image' => $this->input->post('teamcoverImg'));
 					$this->Adminmodel->update($teamcoverImgdata, 'users', array('id' => $userId));
 				}
-				
+
                 if(!empty($this->input->post('college'))){
 					$deleteAca = $this->db->query('delete from academics where user_id = '.$userId.'');
 					if($deleteAca){
@@ -1955,7 +1955,7 @@ class Users extends CI_Controller
 						}
 					}
 				}
-				
+
 				$query = $this->db->query("select * from athletics where user_id = ".$userId."")->row();
 				$athleticsInfo = array(
 					// 'feet' => !empty($this->input->post('feet')) ? trim($this->input->post('feet'), "'") : @$query->feet,
@@ -1989,7 +1989,7 @@ class Users extends CI_Controller
 						}
 					}
 			    }
-				
+
 				if(!empty($this->input->post('coach_name'))){
 					$deleteRef = $this->db->query('delete from reference where user_id = '.$userId.'');
 					if($deleteRef){
@@ -1998,25 +1998,25 @@ class Users extends CI_Controller
 						}
 					}
 				}
-				if(!empty($this->input->post('user_type')) AND $this->input->post('user_type') == 'Player'){			
+				if(!empty($this->input->post('user_type')) AND $this->input->post('user_type') == 'Player'){
 					if(!empty($this->input->post('guardian_name'))){
 						$deleteGuar = $this->db->query('delete from guardian where user_id = '.$userId.'');
 						if($deleteGuar){
 							for($i = 0; $i< count($this->input->post('guardian_name')); $i++){
 								$guardianResult[] = $this->db->query("INSERT INTO guardian (`guardian_name`, `guardian_email`, `guardian_phone`, `guardian_relation`, `user_id`, `created_at`) VALUES ('".$_POST['guardian_name'][$i]."', '".$_POST['guardian_email'][$i]."',  '".$_POST['guardian_phone'][$i]."', '".$_POST['guardian_relation'][$i]."', '".$userId."', '".date('Y-m-d H:i:s')."')");
 							}
-							
-							
+
+
 						}
 					}
 				}
-				
-				
+
+
 				$response['status'] = 1;
 				$response['message'] = 'Profile updated successfully.';
 
 			}
-			
+
 		}
 		echo json_encode($response);
 	}
@@ -2040,7 +2040,7 @@ class Users extends CI_Controller
 				$response['status'] = 0;
 				$response['message'] = 'Some error occure.Please try again.';
 			}
-			
+
 		}
 		echo json_encode($response);
 	}
@@ -2048,14 +2048,14 @@ class Users extends CI_Controller
 		if($_SERVER['REQUEST_METHOD'] == 'POST'){
 			$user_id = $this->input->post('user_id');
 			$sub_id = $this->input->post('sub_id');
-			
+
 			$update_user_sub = $this->db->query("update users set sub_id = '".@$sub_id."' where id = ".@$user_id."");
 			if(!empty($update_user_sub)){
 				$get_sub = $this->db->query("select * from subscription where id = ".@$sub_id."")->row();
 				$get_user = $this->db->query("select id, fname, lname, email, address, country, state, city, zipcode from users where id = ".@$user_id."")->row();
 
 				$checksub_beforeexpire = $this->Adminmodel->checksubBefore_expied(@$user_id);
-				
+
 				if(!empty($checksub_beforeexpire)){
 					$date_1 = date_create(date('Y-m-d'));
 					$date_2 = date_create($checksub_beforeexpire->end_date);
@@ -2063,10 +2063,10 @@ class Users extends CI_Controller
 					$sub_remaining_days = $diff->format("%a");
 					$end_date = $this->get_expire_date(@$get_sub->duration, $sub_remaining_days);
 					//print_r($end_date);die;
-					
+
 					$extractDuration = explode('-', $get_sub->duration);
 					$totalInvitation = $extractDuration[0] * $get_sub->invitation_limit;
-					
+
 					$previousInvi= $this->Adminmodel->get_single_row_info('total_invitation', 'users', 'id = '.@$user_id.' and status = "1"', '', 1);
 					if(!empty($previousInvi->total_invitation)){
 						$preIn = $previousInvi->total_invitation;
@@ -2077,13 +2077,13 @@ class Users extends CI_Controller
 					$update_query = $this->db->query("update users set total_invitation = '".$allTotalIn."', invitation_limit = '".$get_sub->invitation_limit."' where id = ".@$user_id."");
 				}else{
 					$end_date = $this->end_date(@$get_sub->duration);
-					
+
 					$extractDuration = explode('-', $get_sub->duration);
 					$totalInvitation = $extractDuration[0] * $get_sub->invitation_limit;
-					
+
 					$update_query = $this->db->query("update users set total_invitation = '".$totalInvitation."', invitation_limit = '".$get_sub->invitation_limit."' where id = ".@$user_id."");
 				}
-				
+
 				$cardholder = @$get_user->fname .' '. @$get_user->lname;
 				$amount = @$get_sub->amount;
 				$sub_id = @$sub_id;
@@ -2096,11 +2096,11 @@ class Users extends CI_Controller
 				$address = @$get_user->address;
 				$currency = "USD";
 				$orderID = "TEST_".$this->generate_otp(6);
-				
+
 				// $tran_data = array(
 				    // 'user_name' => $cardholder, 'user_id' => $user_id, 'sub_id' => $sub_id, 'order_id' => $orderID, 'address' => $address, 'country' => $country, 'state' => $state, 'city' => $city, 'zipcode' => $zipcode, 'amount' => $amount, 'payment_type' => '1', 'start_date' => date('Y-m-d H:i:s'), 'end_date' => $end_date, 'paid_by_admin' => '2', 'status' => 'succeeded', 'currency' => 'usd', 'created_at' => date('Y-m-d H:i:s')
 				// );
-				
+
 				$tran_data = array(
 				    'user_name' => $cardholder, 'user_id' => $user_id, 'sub_id' => $sub_id, 'order_id' => $orderID, 'address' => $address, 'country' => $country, 'state' => $state, 'city' => $city, 'zipcode' => $zipcode, 'amount' => $amount, 'payment_type' => '1', 'start_date' => date('Y-m-d H:i:s'), 'end_date' => $end_date, 'paid_by_admin' => '2', 'status' => 'succeeded', 'currency' => 'usd', 'created_at' => date('Y-m-d H:i:s')
 				);
@@ -2118,7 +2118,7 @@ class Users extends CI_Controller
 	}
 	function get_expire_date($duration = '', $remainingDays = ''){
 		$return = '';
-		
+
 		if($duration == '1-Month'){
 			$subDays = 30 + $remainingDays . 'Days';
 			$endDate = date('Y-m-d',strtotime(''.$subDays.'',strtotime(date('Y-m-d')))) . PHP_EOL;
@@ -2162,11 +2162,11 @@ class Users extends CI_Controller
 			$subDays = 720 + $remainingDays . 'Days';
 			$endDate = date('Y-m-d',strtotime(''.$subDays.'',strtotime(date('Y-m-d')))) . PHP_EOL;
 		}
-		return $endDate;	
+		return $endDate;
 	}
-	
+
 	function end_date($duration = ''){
-		
+
 		if($duration == '1-Month'){
 			$days = '30 Days';
 			$endDate = date('Y-m-d',strtotime(''.$days.'',strtotime(date('Y-m-d')))) . PHP_EOL;
@@ -2210,10 +2210,10 @@ class Users extends CI_Controller
 			$days = '720 Days';
 			$endDate = date('Y-m-d',strtotime(''.$days.'',strtotime(date('Y-m-d')))) . PHP_EOL;
 		}
-		return $endDate;	
+		return $endDate;
 	}
-	
-	
+
+
 	public function generate_otp($length)
 	{
 		$characters = '123456789';
@@ -2225,7 +2225,7 @@ class Users extends CI_Controller
 		}
 		return $randomString;
 	}
-	
+
 	function update_event_payment(){
 		//print_r($_POST);die;
 		if($_SERVER['REQUEST_METHOD'] == 'POST'){
@@ -2233,16 +2233,16 @@ class Users extends CI_Controller
 			$user_id = $this->input->post('user_id');
 			$transaction = $this->input->post('transaction');
 			$id = $this->input->post('id');
-			
+
 			$get_user_count = $this->db->query("select id from users where id = ".@$user_id."")->num_rows();
 			if($get_user_count > 0){
 				$update_event_pay = $this->db->query("update event_invited_people set transaction = '".@$transaction."' where id = ".@$id." and event_id = ".@$event_id."");
 				if($transaction == 'Paid'){
 					if(!empty(@$update_event_pay)){
-						
+
 						$get_user = $this->db->query("select id, fname, lname, email, address, country, state, city, zipcode from users where id = ".@$user_id."")->row();
 						$get_invited_people = $this->db->query("select distributed_event_price from event_invited_people where id = ".@$id." and event_id = ".@$event_id." ")->row();
-						
+
 						$cardholder = @$get_user->fname .' '. @$get_user->lname;
 						$amount = @$get_invited_people->distributed_event_price;
 						$user_id = @$user_id;
@@ -2255,7 +2255,7 @@ class Users extends CI_Controller
 						$currency = "USD";
 						$orderID = "TEST_".$this->generate_otp(6);
 
-						
+
 						$tran_data = array(
 							'user_name' => $cardholder, 'user_id' => $user_id, 'order_id' => $orderID, 'address' => $address, 'country' => $country, 'state' => $state, 'city' => $city, 'zipcode' => $zipcode, 'amount' => $amount, 'payment_type' => '2', 'status' => 'succeeded', 'currency' => 'usd', 'event_id' => $event_id, 'paid_by_admin' => '2', 'created_at' => date('Y-m-d H:i:s')
 						);
@@ -2271,7 +2271,7 @@ class Users extends CI_Controller
 				}else{
 					if(!empty(@$update_event_pay)){
 						$delete_tran = $this->db->query("delete from transaction where user_id = ".@$user_id." and event_id = ".@$event_id." and payment_type = '2' and paid_by_admin = '2'");
-						
+
 						if(!empty($delete_tran)){
 							$response['status'] = 1;
 							$response['message'] = 'transaction deleted successfully.';
@@ -2285,16 +2285,16 @@ class Users extends CI_Controller
 				$response['status'] = 0;
 				$response['message'] = 'user not register yet.';
 			}
-			
+
 		}
 		echo json_encode($response);
 	}
-	
+
 	function health_etity(){
 		$output = '<option value="">Select Clinic</option>';
 		if($_SERVER['REQUEST_METHOD'] == 'POST'){
 			$health_etity = $this->input->post('health_etity');
-			$etity = $this->db->query("select * from clinic_admin where health_entity = ".@$health_etity."")->result();
+			$etity = $this->db->query("select * from clinic_admin where health_entity = ".@$health_etity." AND status = '1'")->result();
 			if($etity){
 				foreach($etity as $k => $v){
 					$output.= '<option value="'.@$v->id.'">'.@$v->name.'</option>';
@@ -2303,7 +2303,7 @@ class Users extends CI_Controller
 		}
 		echo $output;
 	}
-	
+
 	function get_clinic(){
 		$output = '<option value="">Select Provide</option>';
 		if($_SERVER['REQUEST_METHOD'] == 'POST'){
@@ -2317,7 +2317,7 @@ class Users extends CI_Controller
 		}
 		echo $output;
 	}
-	
+
 	public function coach_admin()
 	{
 		$data = array(
@@ -2325,18 +2325,18 @@ class Users extends CI_Controller
 			'page' => 'Coach Admin List',
 			'subpage' => 'coach-admin',
 		);
-      
-      
+
+
         $data['userlist'] = $this->Adminmodel->get_all_record('*', 'coach_admin', '', array('id', 'DESC'), '');
-		
+
 		//$data['user_subscription'] = $this->Adminmodel->get_all_record('id, name', 'subscription', array('status' => '1'), array('name', 'ASC'), '');
-		
+
 		$this->load->view('admin/header', $data);
 		$this->load->view('admin/sidebar');
 		$this->load->view('admin/coach_admin');
 		$this->load->view('admin/footer');
 	}
-	
+
 	public function addCoachadmin()
 	{
 		$data = array(
@@ -2344,9 +2344,9 @@ class Users extends CI_Controller
 			'page' => 'Add Coach Admin',
 			'subpage' => 'coach-admin',
 		);
-		
+
 		$user_id = 23;
-		
+
 		if($_SERVER['REQUEST_METHOD'] == 'POST'){
 			if(!empty($_FILES['upload_image']['name'])){
 				$config['upload_path'] = 'uploads/clinic'; # check path is correct
@@ -2386,23 +2386,23 @@ class Users extends CI_Controller
 						//redirect(base_url('admin/users/coach_admin'));
 						// $response['status'] = 1;
 						// $response['message'] = 'Coach admin added successfully.';
-						
+
 						$msg = '["Coach admin added successfully.", "success", "#A5DC86"]';
 						$this->session->set_flashdata('msg', $msg);
 						redirect(base_url('admin/users/coach_admin'),'refresh');
-			
+
 					}else{
 						// $response['status'] = 0;
 						// $response['message'] = 'Some error ocure.Please try again.';
 						//redirect(base_url('admin/users/coach_admin'));
-						
+
 						$msg = 'Some error ocure.Please try again.';
 						$this->session->set_flashdata('msg', $msg);
 						redirect(base_url('admin/users/coach_admin'),'refresh');
 					}
 				}
 			}else{
-				
+
 					$data = array(
 						'first_name' => @$this->input->post('fname'),
 						'last_name' => @$this->input->post('lname'),
@@ -2425,7 +2425,7 @@ class Users extends CI_Controller
 						// $response['status'] = 1;
 						// $response['message'] = 'Coach admin added successfully.';
 						//redirect(base_url('admin/users/coach_admin'));
-						
+
 						$msg = '["Coach admin added successfully.", "success", "#A5DC86"]';
 						$this->session->set_flashdata('msg', $msg);
 						redirect(base_url('admin/users/coach_admin'),'refresh');
@@ -2433,21 +2433,21 @@ class Users extends CI_Controller
 						// $response['status'] = 0;
 						// $response['message'] = 'Some error ocure.Please try again.';
 						//redirect(base_url('admin/users/coach_admin'));
-						
+
 						$msg = 'Some error ocure.Please try again.';
 						$this->session->set_flashdata('msg', $msg);
 						redirect(base_url('admin/users/coach_admin'),'refresh');
 					}
 			}
 		}
-		
+
         $data['clinic'] = $this->Adminmodel->get_all_record('*', 'clinic', array('status' => '1'), array('name', 'ASC'), '');
 		$this->load->view('admin/header', $data);
 		$this->load->view('admin/sidebar');
 		$this->load->view('admin/add_coach_admin');
 		$this->load->view('admin/footer');
 	}
-	
+
 	public function editCoachadmin($id)
 	{
 		$data = array(
@@ -2455,7 +2455,7 @@ class Users extends CI_Controller
 			'page' => 'Edit Coach Admin',
 			'subpage' => 'coach-admin',
 		);
-		
+
 		if($_SERVER['REQUEST_METHOD'] == 'POST'){
 			if(!empty($_FILES['upload_image']['name'])){
 				$config['upload_path'] = 'uploads/clinic'; # check path is correct
@@ -2500,7 +2500,7 @@ class Users extends CI_Controller
 					}
 				}
 			}else{
-				
+
 					$data1 = array(
 						'first_name' => @$this->input->post('fname'),
 						'last_name' => @$this->input->post('lname'),
@@ -2529,14 +2529,14 @@ class Users extends CI_Controller
 			}
 		}
 	    $data['result'] = $this->Adminmodel->get_by('coach_admin', 'single', array('id' => $id), '', 1);
-		
+
 	    $data['clinic'] = $this->Adminmodel->get_all_record('*', 'clinic', array('status' => '1'), array('name', 'ASC'), '');
 		$this->load->view('admin/header', $data);
 		$this->load->view('admin/sidebar');
 		$this->load->view('admin/edit_coach_admin');
 		$this->load->view('admin/footer');
 	}
-	
+
 	public function viewCoachadmin($id)
 	{
 		$data = array(
@@ -2545,13 +2545,13 @@ class Users extends CI_Controller
 			'subpage' => 'coach-admin',
 		);
         $data['result'] = $this->Adminmodel->get_by('coach_admin', 'single', array('id' => $id), '', 1);
-		
+
 		$this->load->view('admin/header', $data);
 		$this->load->view('admin/sidebar');
 		$this->load->view('admin/view_coach_admin');
 		$this->load->view('admin/footer');
 	}
-	
+
 	public function changestatus_coach_admin()
 	{
 		if ($this->input->post('userId')) {
@@ -2562,7 +2562,7 @@ class Users extends CI_Controller
 			} else {
 				$msg = 'Your status is Inctivate';
 			}
-			
+
 			if ($this->Adminmodel->update(['status'=>$status], 'coach_admin', ['id'=>$userId])) {
 				echo '["'.$msg.'", "success", "#A5DC86"]';
 			} else {
@@ -2570,7 +2570,7 @@ class Users extends CI_Controller
 			}
 		}
 	}
-	
+
 	function deleteUser_coach_admin($id){
 		if(empty($id)){
 			return false;
@@ -2586,5 +2586,5 @@ class Users extends CI_Controller
 			redirect(base_url('admin/users/coach_admin'),'refresh');
 		}
 	}
-	
-}	
+
+}
