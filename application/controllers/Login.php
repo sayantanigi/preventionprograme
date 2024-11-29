@@ -97,7 +97,8 @@ class Login extends CI_Controller {
                     $email = strip_tags($this->input->post('email'));
                     $data['verifyemail'] = strip_tags($this->input->post('email'));
                     $data['token'] = $emailToken;
-                    $this->session->set_flashdata('success', "Your registration is successfully completed.The link of email varification has been sent to your email address.please check your email inbox.");
+                    //$this->session->set_flashdata('success', "Your registration is successfully completed.The link of email varification has been sent to your email address.please check your email inbox.");
+                    $this->session->set_flashdata('success', "Your registration is successfully completed. You can login now.");
                     redirect(base_url() . 'complete_submission');
                 } else {
                     $this->session->set_flashdata('error', "Some error ocure. Please try again.");
