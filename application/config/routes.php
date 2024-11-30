@@ -82,6 +82,7 @@ $route['coach/update_profile'] = 'coach/Dashboard/update_profile';
 $route['coach/change_password'] = 'coach/Dashboard/change_password';
 $route['coach/participants'] = 'coach/Dashboard/participants';
 $route['coach/add_participant'] = 'coach/Dashboard/add_participant';
+$route['coach/update_participant'] = 'coach/Dashboard/update_participant';
 
 //welcome
 $route['paymentPage'] = 'welcome/paymentPage';
