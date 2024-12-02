@@ -555,10 +555,10 @@ function detailParticipant(id) {
             //$('#edit_uid').val(responce.id);
             // Set the profile and cover image preview (display images if applicable)
             if (responce.image) {
-                $('#detailsImage').attr('src', '<?= base_url('/uploads/profile/')?>' + responce.image);
+                $('#OwnerImg').attr('src', '<?= base_url('/uploads/profile/')?>' + responce.image);
             }
             if (responce.coverImage) {
-                $('#OwnerImg').attr('src', '<?= base_url('/uploads/profile/')?>' + responce.coverImage);
+                $('#detailsImage').attr('src', '<?= base_url('/uploads/profile/')?>' + responce.coverImage);
             }
         }
     })
