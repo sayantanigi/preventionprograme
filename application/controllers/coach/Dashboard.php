@@ -138,7 +138,9 @@ class Dashboard extends CI_Controller {
             'page' => 'Participants Management',
             'subpage' => 'participants',
             'entity' => $this->db->query("SELECT * FROM health_entity WHERE status = '1' ORDER BY name ASC")->result(),
-            'participant_list' => $this->db->query("SELECT * FROM users WHERE added_by = '".$userId."'")->result()
+            'allParticipant_list' => $this->db->query("SELECT * FROM users WHERE added_by = '".$userId."' ORDER BY id DESC")->result(),
+            'allunassignedParticipant_list' => $this->db->query("SELECT * FROM users WHERE status = '1' AND added_by = '".$userId."' AND (assigned_to = '' OR assigned_to IS NULL) ORDER BY id DESC")->result(),
+            'alldeactivatedParticipant_list' => $this->db->query("SELECT * FROM users WHERE status != '1' AND added_by = '".$userId."' ORDER BY id DESC")->result()
         );
 
         $this->load->view('coach/header', $data);
@@ -266,6 +268,22 @@ class Dashboard extends CI_Controller {
         $this->db->update('users', $data, "id='" . $_POST['edit_uid'] . "'");
         $this->session->set_flashdata('message', 'Participant updated Successfully');
         redirect(base_url('coach/participants'));
+    }
+    public function detailsParticipant() {
+        $user_id = $this->input->post('u_id');
+        $getData = $this->db->query("SELECT * FROM users WHERE id = '".$user_id."'")->row();
+        $health_etity = $this->db->query("SELECT * FROM health_entity WHERE id = '".$getData->health_etity."'")->row();
+        $clinic = $this->db->query("SELECT * FROM clinic_admin WHERE health_entity = '".$getData->clinic."'")->row();
+        $provider = $this->db->query("SELECT * FROM provider WHERE id = '".$getData->provider."'")->row();
+        $addedBy = $this->db->query("SELECT * FROM users WHERE id = '".$getData->added_by."'")->row();
+
+        $getData->added_by_name = $addedBy ? $addedBy->fname." ".$addedBy->lname : null;
+        $getData->health_entity_name = $health_etity ? $health_etity->name : null;
+        $getData->clinic_name = $clinic ? $clinic->name : null;
+        $getData->provider_name = $provider ? $provider->name : null;
+
+        $updatedData = ["id" => $getData->id,"added_by" => $getData->added_by_name,"participant_code" => $getData->participant_code,"user_type" => $getData->user_type,"fname" => $getData->fname,"lname" => $getData->lname,"email" => $getData->email,"dob" => $getData->dob,"phone" => $getData->phone,"phone_2" => $getData->phone_2,"password" => $getData->password,"address" => $getData->address,"address_2" => $getData->address_2,"country" => $getData->country,"state" => $getData->state,"city" => $getData->city,"zipcode" => $getData->zipcode,"latitude" => $getData->latitude,"longitude" => $getData->longitude,"about" => $getData->about,"image" => $getData->image,"coverImage" => $getData->coverImage,"assigned_to" => $getData->assigned_to,"facebook" => $getData->facebook,"twitter" => $getData->twitter,"instagram" => $getData->instagram,"pinterest" => $getData->pinterest,"status" => $getData->status,"email_verify_token" => $getData->email_verify_token,"email_verify_status" => $getData->email_verify_status,"sub_id" => $getData->sub_id,"customize_payment" => $getData->customize_payment,"cashapp" => $getData->cashapp,"zelle" => $getData->zelle,"venmo" => $getData->venmo,"apple_pay" => $getData->apple_pay,"oauth_provider" => $getData->oauth_provider,"oauth_uid" => $getData->oauth_uid,"total_invitation" => $getData->total_invitation,"invitation_limit" => $getData->invitation_limit,"auto_renew_status" => $getData->auto_renew_status,"otp" => $getData->otp,"degree" => $getData->degree,"clinical_interests" => $getData->clinical_interests,"languages" => $getData->languages,"specializations" => $getData->specializations,"certificates" => $getData->certificates,"max_week" => $getData->max_week,"health_etity" => $getData->health_entity_name,"clinic" => $getData->clinic_name,"provider" => $getData->provider_name,"insurance_provider" => $getData->insurance_provider,"created_at" => $getData->created_at,"updated_at" => $getData->updated_at];
+        echo json_encode($updatedData);
     }
     public function deleteParticipant() {
         $user_id = $_POST['u_id'];

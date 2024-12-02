@@ -69,7 +69,7 @@
                         </div>
                         <div class="col-md-4 col-sm-12">
                             <label class="form-label">Insurance Provider <span style="color: red">*</span></label>
-                            <input type="text" name="insurance_provider"  id="insurance_provider" required autocomplete="off" placeholder="Enter title">
+                            <input type="text" name="insurance_provider"  id="insurance_provider" required autocomplete="off" placeholder="Enter Insurance Provider Name">
                         </div>
                         <div class="col-md-4 col-sm-12">
                             <label class="form-label">Upload Profile Picture</label>
@@ -91,16 +91,27 @@
                                 </div>
                                 <div class="col-md-4 col-sm-12">
                                     <label class="form-label">Password <span style="color: red">*</span></label>
-                                    <input type="text" name="password"  id="password" required autocomplete="off" placeholder="Enter title">
+                                    <input type="password" name="password"  id="password" required autocomplete="off" placeholder="Enter Password">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text" style="border-radius: 0;height: 36px;border-left: none;border-top-right-radius: 10px;border-bottom-right-radius: 10px;background-color: #f5f5f5;width: 40px;position: absolute;top: 411px;bottom: 0;left: 698px;border: none;">
+                                            <i class="fa fa-eye-slash" id="eye"></i>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="col-md-4 col-sm-12">
                                     <label class="form-label">Confirm Password <span style="color: red">*</span></label>
-                                    <input type="text" name="confirm_password"  id="confirm_password" required autocomplete="off" placeholder="Enter title">
+                                    <input type="password" name="confirm_password"  id="confirm_password" required autocomplete="off" placeholder="Enter Password">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text" style="border-radius: 0;height: 36px;border-left: none;border-top-right-radius: 10px;border-bottom-right-radius: 10px;background-color: #f5f5f5;width: 40px;position: absolute;top: 411px;bottom: 0;right: 41px;border: none;">
+                                            <i class="fa fa-eye-slash" id="eyecon"></i>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         <div class="modal-footer" style="margin: 0; border: none; padding: 0px 6px 0px 0px;">
-                            <button type="submit" class="btn btn-primary">Add Participant</button>
+                            <p id="passerrormsg" style="margin-right: 55px; color: green; "></p>
+                            <button type="submit" class="btn btn-primary" id="addParticipantButton">Add Participant</button>
                             <input type="hidden" name="uid" id="uid" value="<?= $this->session->userdata('loguserId'); ?>">
                         </div>
                     </form>
@@ -185,13 +196,13 @@
                                 <label class="form-label">Upload Profile Picture</label>
                                 <input type="file" name="edit_profilePic" class="form-control" id="inputGroupFile01">
                                 <input type="hidden" name="old_image" id="old_image">
-                                <img src="" id="profileImagePreview">
+                                <img src="<?= base_url('assets/users_assets/images/no_user.png')?>" id="profileImagePreview">
                             </div>
                             <div class="col-md-4 col-sm-12">
                                 <label class="form-label">Upload Cover Picture</label>
                                 <input type="file" name="edit_backgroundPic" class="form-control" id="inputGroupFile02">
                                 <input type="hidden" name="old_bimage" id="old_bimage">
-                                <img src="" id="coverImagePreview">
+                                <img src="<?= base_url('assets/users_assets/images/no_bimage.png')?>" id="coverImagePreview">
                             </div>
                         </div>
                         <div class="modal-footer" style="margin: 0; border: none; padding: 0px 6px 0px 0px;">
@@ -216,7 +227,7 @@
                     <p class="InfoText">Do you really want your participant to be deleted? It cannot be undone once deleted.</p>
                 </div>
                 <div class="modal-footer">
-                    <p id="errormsg" style="margin-right: 55px; color: green; "></p>
+                    <p id="message" style="margin-right: 55px; color: green; "></p>
                     <button type="button" class="btn btn-primary" onclick="onDeleteParticipant()">Delete</button>
                     <input type="hidden" id="idToDelete" value="">
                 </div>
@@ -225,37 +236,31 @@
     </div>
 
     <!-- Details Promotion Modal -->
-    <div class="modal fade CustomModal" id="DetailsPromotionModal" data-bs-backdrop="static"
-        data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+    <div class="modal fade CustomModal" id="DetailsPromotionModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Promotion Details</h5>
+                    <h5 class="modal-title">Participant Details</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="row PromotionDetail">
                         <div class="col-md-8 col-sm-12 PromotionImg">
-                            <img class="w-100"
-                                src="https://img.freepik.com/free-photo/people-concert_1160-737.jpg?t=st=1730050734~exp=1730054334~hmac=4785251%E2%80%A6&w=900"
-                                alt="">
+                            <img class="w-100" id="detailsImage" src="https://img.freepik.com/free-photo/people-concert_1160-737.jpg?t=st=1730050734~exp=1730054334~hmac=4785251%E2%80%A6&w=900" alt="">
                         </div>
                         <div class="col-md-4 col-sm-12 PromotionData">
-                            <img class="OwnerImg"
-                                src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=1760&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                                alt="">
-                            <p class="TitleText">Promotion Title</p>
-                            <p class="OwnerText"><b>Owner:</b> Owner Name</p>
+                            <img class="OwnerImg" id="OwnerImg" src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=1760&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="">
+                            <p class="TitleText" id="TitleText"></p>
                             <ul>
-                                <li>Tag Item</li>
-                                <li>Tag Item</li>
-                                <li>Tag</li>
-                                <li>Tag Item</li>
-                                <li>Tag Item</li>
+                                <li id="tag1">Participant ID: </li>
+                                <li id="tag2">Clinic: </li>
+                                <li id="tag3">Provider:</li>
+                                <li id="tag4">Coach:</li>
+                                <li id="tag5">Enrolled By: </li>
                             </ul>
                         </div>
                         <div class="col-md-12 col-sm-12 PromotionData">
-                            <p class="BodyText">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quod molestias nihil vero quisquam assumenda. Consequuntur fuga veritatis quasi voluptates eum soluta ea quos eaque, hic possimus ipsum? Dicta, quisquam natus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque iusto autem rerum quibusdam pariatur saepe earum, laboriosam quam ab illo quod ad ut voluptatem. Consectetur, unde. Odit, beatae? Fugiat, magni. Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nemo tempora delectus, officiis corrupti perspiciatis quam temporibus! Placeat, consectetur possimus ab accusantium itaque numquam ea. Dicta deserunt quae blanditiis eaque fuga. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptates perferendis illum earum tempore, voluptas, facilis ullam illo sed provident tenetur quod accusantium harum, numquam nam consectetur aut consequuntur sunt quaerat? Lorem ipsum dolor, sit amet consectetur adipisicing elit. Eaque aperiam in similique quibusdam, ex veniam. Ullam, minus! Sapiente suscipit pariatur eum aspernatur laudantium earum! Quaerat, molestias ullam! Dolorum, sit similique. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Exercitationem odio iure corporis deleniti unde quo ab atque soluta quam porro commodi quae ut natus, in voluptates quia quod fugit sint.</p>
+                            <p class="BodyText" id="BodyText"></p>
                         </div>
                     </div>
                 </div>
@@ -285,10 +290,70 @@
     </div>
 
     <div id="AllParticipant" class="row m-0 TabContent active">
-        <?php if(!empty($participant_list)) {
-        foreach ($participant_list as $key => $data) { ?>
+        <?php if(!empty($allParticipant_list)) {
+        foreach ($allParticipant_list as $key => $data) { ?>
         <div class="Card col-lg-3 col-md-3 col-sm-6">
-            <div class="CardInner" data-bs-toggle="modal" data-bs-target="#DetailsPromotionModal" style="background: url(<?= base_url('/uploads/profile/'.@$data->coverImage)?>); background-size: cover; background-repeat: no-repeat;">
+            <?php
+            if(!empty($data->image) && file_exists('uploads/profile/'.$data->image)) {
+                $image = base_url('/uploads/profile/'.@$data->coverImage);
+            } else {
+                $image = base_url('assets/users_assets/images/no_bimage.png');
+            } ?>
+            <div class="CardInner" data-bs-toggle="modal" data-bs-target="#DetailsPromotionModal" style="background: url(<?= $image?>); background-size: cover; background-repeat: no-repeat;" onclick="detailParticipant('<?= $data->id; ?>')">
+                <div class="Cover"></div>
+                <p class="Heading"><?= @$data->fname." ".@$data->lname?></p>
+                <p class="SubHeading">Participant ID: <?= @$data->participant_code;?></p>
+                <p class="SubHeading">Clinic:
+                    <?php
+                    $getClinic = $this->db->query("SELECT * FROM clinic_admin WHERE id = '".@$data->clinic."'")->row();
+                    echo @$getClinic->name;
+                    ?>
+                </p>
+                <p class="SubHeading">Provider:
+                    <?php
+                    $getProvider = $this->db->query("SELECT * FROM provider WHERE id = '".@$data->provider."'")->row();
+                    echo @$getProvider->name;
+                    ?>
+                </p>
+                <p class="SubHeading">Coach:
+                    <?php
+                    $getHealthEntity = $this->db->query("SELECT * FROM health_entity WHERE id = '".@$data->health_etity."'")->row();
+                    echo $getHealthEntity->name;
+                    ?>
+                </p>
+                <p class="SubHeading">Enrolled By:
+                    <?php
+                    $getEnrolledBy = $this->db->query("SELECT * FROM users WHERE id = '".@$data->added_by."'")->row();
+                    echo @$getEnrolledBy->fname." ".@$getEnrolledBy->lname;
+                    ?>
+                </p>
+                <div class="IconContainer">
+                    <a href="" data-bs-toggle="modal" data-bs-target="#EditPromotionModal" onclick="editParticipant('<?= $data->id; ?>')">
+                        <i class="fa fa-pencil-square" aria-hidden="true"></i>
+                    </a>
+                    <a href="" data-bs-toggle="modal" data-bs-target="#DeletePromotionModal" onclick="deleteParticipant('<?= $data->id; ?>')">
+                        <i class="fa fa-trash" aria-hidden="true"></i>
+                    </a>
+                </div>
+                <!-- <div style="position: absolute; z-index: 10; top: 50px; right: 12px; display: flex; flex-direction: row; align-items: center; justify-content: center; height: 35px; gap: 10px; ">
+                    <button class="btn btn-primary">Assign</button>
+                </div> -->
+            </div>
+        </div>
+        <?php } } ?>
+    </div>
+
+    <div id="UnassignedParticipant" class="row m-0 TabContent">
+        <?php if(!empty($allunassignedParticipant_list)) {
+        foreach ($allunassignedParticipant_list as $key => $data) { ?>
+        <div class="Card col-lg-3 col-md-3 col-sm-6">
+            <?php
+            if(!empty($data->image) && file_exists('uploads/profile/'.$data->image)) {
+                $image = base_url('/uploads/profile/'.@$data->coverImage);
+            } else {
+                $image = base_url('assets/users_assets/images/no_bimage.png');
+            } ?>
+            <div class="CardInner" data-bs-toggle="modal" data-bs-target="#DetailsPromotionModal" style="background: url(<?= $image?>); background-size: cover; background-repeat: no-repeat;">
                 <div class="Cover"></div>
                 <p class="Heading"><?= @$data->fname." ".@$data->lname?></p>
                 <p class="SubHeading">Participant ID: <?= @$data->participant_code;?></p>
@@ -329,56 +394,17 @@
         <?php } } ?>
     </div>
 
-    <div id="UnassignedParticipant" class="row m-0 TabContent">
-        <?php if(!empty($participant_list)) {
-        foreach ($participant_list as $key => $data) { ?>
-        <div class="Card col-lg-3 col-md-3 col-sm-6">
-            <div class="CardInner" data-bs-toggle="modal" data-bs-target="#DetailsPromotionModal">
-                <div class="Cover"></div>
-                <p class="Heading"><?= @$data->fname." ".@$data->lname?></p>
-                <p class="SubHeading">Participant ID: <?= @$data->participant_code;?></p>
-                <p class="SubHeading">Clinic:
-                    <?php
-                    $getClinic = $this->db->query("SELECT * FROM clinic_admin WHERE id = '".@$data->clinic."'")->row();
-                    echo @$getClinic->name;
-                    ?>
-                </p>
-                <p class="SubHeading">Provider:
-                    <?php
-                    $getProvider = $this->db->query("SELECT * FROM provider WHERE id = '".@$data->provider."'")->row();
-                    echo @$getProvider->name;
-                    ?>
-                </p>
-                <p class="SubHeading">Coach:
-                    <?php
-                    $getHealthEntity = $this->db->query("SELECT * FROM health_entity WHERE id = '".@$data->health_etity."'")->row();
-                    echo $getHealthEntity->name;
-                    ?>
-                </p>
-                <p class="SubHeading">Enrolled By:
-                    <?php
-                    $getEnrolledBy = $this->db->query("SELECT * FROM users WHERE id = '".@$data->added_by."'")->row();
-                    echo @$getEnrolledBy->fname." ".@$getEnrolledBy->lname;
-                    ?>
-                </p>
-                <div class="IconContainer">
-                    <a href="" data-bs-toggle="modal" data-bs-target="#EditPromotionModal">
-                        <i class="fa fa-pencil-square" aria-hidden="true"></i>
-                    </a>
-                    <a href="" data-bs-toggle="modal" data-bs-target="#DeletePromotionModal">
-                        <i class="fa fa-trash" aria-hidden="true"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-        <?php } } ?>
-    </div>
-
     <div id="ParticipantDeactivated" class="row m-0 TabContent">
-        <?php if(!empty($participant_list)) {
-        foreach ($participant_list as $key => $data) { ?>
+        <?php if(!empty($alldeactivatedParticipant_list)) {
+        foreach ($alldeactivatedParticipant_list as $key => $data) { ?>
         <div class="Card col-lg-3 col-md-3 col-sm-6">
-            <div class="CardInner" data-bs-toggle="modal" data-bs-target="#DetailsPromotionModal">
+            <?php
+            if(!empty($data->image) && file_exists('uploads/profile/'.$data->image)) {
+                $image = base_url('/uploads/profile/'.@$data->coverImage);
+            } else {
+                $image = base_url('assets/users_assets/images/no_bimage.png');
+            } ?>
+            <div class="CardInner" data-bs-toggle="modal" data-bs-target="#DetailsPromotionModal" style="background: url(<?= $image?>); background-size: cover; background-repeat: no-repeat;">
                 <div class="Cover"></div>
                 <p class="Heading"><?= @$data->fname." ".@$data->lname?></p>
                 <p class="SubHeading">Participant ID: <?= @$data->participant_code;?></p>
@@ -407,10 +433,10 @@
                     ?>
                 </p>
                 <div class="IconContainer">
-                    <a href="" data-bs-toggle="modal" data-bs-target="#EditPromotionModal">
+                    <a href="" data-bs-toggle="modal" data-bs-target="#EditPromotionModal" onclick="editParticipant('<?= $data->id; ?>')">
                         <i class="fa fa-pencil-square" aria-hidden="true"></i>
                     </a>
-                    <a href="" data-bs-toggle="modal" data-bs-target="#DeletePromotionModal">
+                    <a href="" data-bs-toggle="modal" data-bs-target="#DeletePromotionModal" onclick="deleteParticipant('<?= $data->id; ?>')">
                         <i class="fa fa-trash" aria-hidden="true"></i>
                     </a>
                 </div>
@@ -424,6 +450,46 @@
     #coverImagePreview{width: 55px; height: 55px; border-radius: 30px; float: left; margin-top: 15px;}
 </style>
 <script>
+$(document).ready(function() {
+    $('#confirm_password').on('keyup', function () {
+        if ($('#password').val() == $('#confirm_password').val()) {
+            $('#passerrormsg').html('Password Match').css('color', 'green');
+            $('#password').focus().css('border', '2px solid green');
+            $('#confirm_password').focus().css('border', '2px solid green');
+            document.getElementById('addParticipantButton').disabled = false;
+        } else {
+            $('#password').focus().css('border', '2px solid red');
+            $('#confirm_password').focus().css('border', '2px solid red');
+            $('#passerrormsg').html('Password Mismatch').css('color', 'red');
+            document.getElementById('addParticipantButton').disabled = true;
+        }
+    });
+
+    $('#eye').click(function() {
+        if($(this).hasClass('fa-eye-slash')) {
+            $(this).removeClass('fa-eye-slash');
+            $(this).addClass('fa-eye');
+            $('#password').attr('type','text');
+        } else {
+            $(this).removeClass('fa-eye');
+            $(this).addClass('fa-eye-slash');
+            $('#password').attr('type','password');
+        }
+    });
+
+    $('#eyecon').click(function() {
+        if($(this).hasClass('fa-eye-slash')) {
+            $(this).removeClass('fa-eye-slash');
+            $(this).addClass('fa-eye');
+            $('#confirm_password').attr('type','text');
+        } else {
+            $(this).removeClass('fa-eye');
+            $(this).addClass('fa-eye-slash');
+            $('#confirm_password').attr('type','password');
+        }
+    });
+});
+
 $(document).on('change','#health_etity',function(e){
 	var health_etity = $(this).val();
     $.ajax({
@@ -471,6 +537,32 @@ $(document).on('change','#edit_clinic',function(e){
         }
 	});
 });
+
+function detailParticipant(id) {
+    var uid = id;
+    $.ajax({
+        type: 'POST',
+        url: '<?php echo base_url('coach/Dashboard/detailsParticipant'); ?>',
+        data: {u_id : uid},
+        success: function(data){
+            var responce =JSON.parse(data);
+            $('#tag1').text('Participant ID: '+responce.participant_code);
+            $('#tag2').text('Clinic: '+responce.clinic);
+            $('#tag3').text('Provider:' +responce.provider);
+            $('#tag4').text('Coach:' +responce.health_etity);
+            $('#tag5').text('Enrolled By:' +responce.added_by);
+            $('#BodyText').text(responce.about);
+            //$('#edit_uid').val(responce.id);
+            // Set the profile and cover image preview (display images if applicable)
+            if (responce.image) {
+                $('#detailsImage').attr('src', '<?= base_url('/uploads/profile/')?>' + responce.image);
+            }
+            if (responce.coverImage) {
+                $('#OwnerImg').attr('src', '<?= base_url('/uploads/profile/')?>' + responce.coverImage);
+            }
+        }
+    })
+}
 
 function editParticipant(id) {
     var uid = id;
