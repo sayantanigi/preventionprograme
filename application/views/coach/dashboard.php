@@ -16,7 +16,7 @@
                 </a>
             </div>
             <div class="col-lg-2 col-md-2 col-sm-6">
-                <a href="" id="Event">
+                <a href="<?= base_url('coach/providers')?>" id="Event">
                     <img class="InActiveImg" src="<?= base_url('assets/users_assets/images/Icon12.png') ?>" alt="">
                     <img class="ActiveImg" src="<?= base_url('assets/users_assets/images/Icon17.png') ?>" alt="">
                     <p>Provider Management</p>

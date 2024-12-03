@@ -61,7 +61,7 @@
                 </a>
             </li>
             <li>
-                <a href="" id="ManageSubscription1">
+                <a href="<?= base_url('coach/providers')?>" id="ManageSubscription1">
                     <img src="<?= base_url('assets/users_assets/images/NavIcon4.png'); ?>" alt="">
                     <p>Provider</p>
                 </a>

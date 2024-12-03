@@ -84,6 +84,10 @@ $route['coach/participants'] = 'coach/Dashboard/participants';
 $route['coach/add_participant'] = 'coach/Dashboard/add_participant';
 $route['coach/update_participant'] = 'coach/Dashboard/update_participant';
 
+$route['coach/providers'] = 'coach/Dashboard/providers';
+$route['coach/add_provider'] = 'coach/Dashboard/add_provider';
+$route['coach/update_provider'] = 'coach/Dashboard/update_provider';
+
 //welcome
 $route['paymentPage'] = 'welcome/paymentPage';
 $route['paymentStatus'] = 'welcome/paymentStatus';
