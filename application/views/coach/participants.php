@@ -626,22 +626,26 @@ function assignParticipant(id){
 function onAssignParticipant() {
     var uid = $('#idToAssign').val();
     var providerid = $('#providerToAssign').val();
-    $.ajax({
-        type: 'POST',
-        url: '<?php echo base_url('coach/Dashboard/assignToParticipant'); ?>',
-        data: {u_id : uid, providerid: providerid},
-        success: function(data){
-            var responce =JSON.parse(data);
-            if(responce[0] == 'success'){
-                $('#messageassign').html(responce[1]).css({'margin-right': '55px', 'color': 'green'});
-                $('#messageassign').fadeOut(3000);
-                setTimeout(() => {
-                    location.reload();
-                }, 3500);
-            } else {
-                $('#messageassign').html(responce[1]).css({'margin-right': '55px', 'color': 'red'});
+    if(providerid != ''){
+        $.ajax({
+            type: 'POST',
+            url: '<?php echo base_url('coach/Dashboard/assignToParticipant'); ?>',
+            data: {u_id : uid, providerid: providerid},
+            success: function(data){
+                var responce =JSON.parse(data);
+                if(responce[0] == 'success'){
+                    $('#messageassign').html(responce[1]).css({'margin-right': '55px', 'color': 'green'});
+                    $('#messageassign').fadeOut(3000);
+                    setTimeout(() => {
+                        location.reload();
+                    }, 3500);
+                } else {
+                    $('#messageassign').html(responce[1]).css({'margin-right': '55px', 'color': 'red'});
+                }
             }
-        }
-    })
+        })
+    } else {
+        $('#messageassign').html("Please select provider first").css({'margin-right': '55px', 'color': 'red'});
+    }
 }
 </script>
