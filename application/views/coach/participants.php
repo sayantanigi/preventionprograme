@@ -221,7 +221,6 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Delete Participant</h5>
-                    <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
                 </div>
                 <div class="modal-body">
                     <p class="InfoText">Do you really want your participant to be deleted? It cannot be undone once deleted.</p>
@@ -347,7 +346,14 @@
             </div>
             <div class="IconContainer">
                 <div style="position: absolute; z-index: 10; top: 50px; right: 20px; display: flex; flex-direction: row; align-items: center; justify-content: center; height: 35px; gap: 10px; ">
-                    <button class="btn btn-primary" style="background: #c5a668;border: 1px solid #c5a668;" data-bs-toggle="modal" data-bs-target="#assignParticipantModal" onclick="assignParticipant('<?= $data->id; ?>')">Assign</button>
+                    <button class="btn btn-primary" style="background: #c5a668;border: 1px solid #c5a668;" data-bs-toggle="modal" data-bs-target="#assignParticipantModal" onclick="assignParticipant('<?= $data->id; ?>')">
+                    <?php
+                    if($data->provider > 0) {
+                        echo "<span>Reassign</span>";
+                    } else {
+                        echo "<span>Assign</span>";
+                    } ?>
+                    </button>
                 </div>
             </div>
         </div>
@@ -376,6 +382,18 @@
                     <a href="" data-bs-toggle="modal" data-bs-target="#DeletePromotionModal" onclick="deleteParticipant('<?= $data->id; ?>')">
                         <i class="fa fa-trash" aria-hidden="true"></i>
                     </a>
+                </div>
+            </div>
+            <div class="IconContainer">
+                <div style="position: absolute; z-index: 10; top: 50px; right: 20px; display: flex; flex-direction: row; align-items: center; justify-content: center; height: 35px; gap: 10px; ">
+                    <button class="btn btn-primary" style="background: #c5a668;border: 1px solid #c5a668;" data-bs-toggle="modal" data-bs-target="#assignParticipantModal" onclick="assignParticipant('<?= $data->id; ?>')">
+                    <?php
+                    if($data->provider > 0) {
+                        echo "Reassign";
+                    } else {
+                        echo "Assign";
+                    } ?>
+                    </button>
                 </div>
             </div>
         </div>
@@ -648,4 +666,6 @@ function onAssignParticipant() {
         $('#messageassign').html("Please select provider first").css({'margin-right': '55px', 'color': 'red'});
     }
 }
+
+
 </script>

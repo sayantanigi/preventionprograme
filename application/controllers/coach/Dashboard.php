@@ -140,7 +140,7 @@ class Dashboard extends CI_Controller {
             'subpage' => 'participants',
             'entity' => $this->db->query("SELECT * FROM health_entity WHERE status = '1' ORDER BY name ASC")->result(),
             'allParticipant_list' => $this->db->query("SELECT * FROM users WHERE added_by = '".$userId."' AND user_type = '1' ORDER BY id DESC")->result(),
-            'allunassignedParticipant_list' => $this->db->query("SELECT * FROM users WHERE status = '1' AND added_by = '".$userId."' AND user_type = '1' AND (assigned_to = '' OR assigned_to IS NULL) ORDER BY id DESC")->result(),
+            'allunassignedParticipant_list' => $this->db->query("SELECT * FROM users WHERE status = '1' AND added_by = '".$userId."' AND user_type = '1' AND (provider = '' OR provider IS NULL) ORDER BY id DESC")->result(),
             'alldeactivatedParticipant_list' => $this->db->query("SELECT * FROM users WHERE status != '1' AND added_by = '".$userId."' AND user_type = '1' ORDER BY id DESC")->result()
         );
 
@@ -368,8 +368,10 @@ class Dashboard extends CI_Controller {
             'fname' => $_POST['fname'],
             'lname' => $_POST['lname'],
             'email' => $_POST['email'],
+            'gender' => $_POST['gender'],
             'dob' => $_POST['dob'],
             'phone' => $_POST['phone'],
+            'specializations' => $_POST['specializations'],
             'phone_2' => $_POST['phone_2'],
             'health_etity' => $_POST['health_etity'],
             'clinic' => $_POST['clinic'],
@@ -433,8 +435,10 @@ class Dashboard extends CI_Controller {
             'fname' => $_POST['edit_fname'],
             'lname' => $_POST['edit_lname'],
             'email' => $_POST['edit_email'],
+            'gender' => $_POST['edit_gender'],
             'dob' => $_POST['edit_dob'],
             'phone' => $_POST['edit_phone'],
+            'specializations' => $_POST['edit_specializations'],
             'phone_2' => $_POST['edit_phone_2'],
             'health_etity' => $_POST['edit_health_etity'],
             'clinic' => $_POST['edit_clinic'],

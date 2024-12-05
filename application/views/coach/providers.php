@@ -35,6 +35,14 @@
                             <input type="date" name="dob" id="dob" required autocomplete="off" placeholder="Enter title">
                         </div>
                         <div class="col-md-4 col-sm-12">
+                            <label class="form-label">Gender <span style="color: red">*</span></label>
+                            <select class="form-control" name="gender" required id="gender">
+                                <option value="">Select Gender</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4 col-sm-12">
                             <label class="form-label">Provider Phone No <span style="color: red">*</span></label>
                             <input type="text" name="phone" id="phone" required autocomplete="off" placeholder="Enter Provider Phone No 1">
                         </div>
@@ -42,6 +50,48 @@
                             <label class="form-label">Provider Phone No 2</label>
                             <input type="text" name="phone_2" id="phone_2" autocomplete="off" placeholder="Enter Provider Phone No 2">
                         </div> -->
+                        <div class="col-md-4 col-sm-12">
+                            <label class="form-label">Specializations <span style="color: red">*</span></label>
+                            <select class="form-control" name="specializations" required id="userspecializations">
+                                <option value="">Select specializations</option>
+                                <option value="Allergists/Immunologists">Allergists/Immunologists</option>
+                                <option value="Anesthesiologists">Anesthesiologists</option>
+                                <option value="Cardiologists">Cardiologists</option>
+                                <option value="Colon and Rectal Surgeons">Colon and Rectal Surgeons</option>
+                                <option value="Critical Care Medicine Specialists">Critical Care Medicine Specialists</option>
+                                <option value="Dermatologists">Dermatologists</option>
+                                <option value="Endocrinologists">Endocrinologists</option>
+                                <option value="Emergency Medicine Specialists">Emergency Medicine Specialists</option>
+                                <option value="Family Physicians">Family Physicians</option>
+                                <option value="Gastroenterologists">Gastroenterologists</option>
+                                <option value="Geriatric Medicine Specialists">Geriatric Medicine Specialists</option>
+                                <option value="Hematologists">Hematologists</option>
+                                <option value="Hospice and Palliative Medicine Specialists">Hospice and Palliative Medicine Specialists</option>
+                                <option value="Infectious Disease Specialists">Infectious Disease Specialists</option>
+                                <option value="Internists">Internists</option>
+                                <option value="Medical Geneticists">Medical Geneticists</option>
+                                <option value="Nephrologists">Nephrologists</option>
+                                <option value="Neurologists">Neurologists</option>
+                                <option value="Obstetricians and Gynecologists">Obstetricians and Gynecologists</option>
+                                <option value="Oncologists">Oncologists</option>
+                                <option value="Ophthalmologists">Ophthalmologists</option>
+                                <option value="Osteopaths ">Osteopaths </option>
+                                <option value="Otolaryngologists">Otolaryngologists</option>
+                                <option value="Pathologists">Pathologists</option>
+                                <option value="Pediatricians">Pediatricians</option>
+                                <option value="Physiatrists">Physiatrists</option>
+                                <option value="Plastic Surgeons">Plastic Surgeons</option>
+                                <option value="Podiatrists">Podiatrists</option>
+                                <option value="Preventive Medicine Specialists">Preventive Medicine Specialists</option>
+                                <option value="Psychiatrists">Psychiatrists</option>
+                                <option value="Pulmonologists">Pulmonologists</option>
+                                <option value="Radiologists">Radiologists</option>
+                                <option value="Rheumatologists">Rheumatologists</option>
+                                <option value="Sleep Medicine Specialists">Sleep Medicine Specialists</option>
+                                <option value="General Surgeons">General Surgeons</option>
+                                <option value="Urologists">Urologists</option>
+                            </select>
+                        </div>
                         <div class="col-md-4 col-sm-12">
                             <label class="form-label">Select Health Group <span style="color: red">*</span></label>
                             <select class="form-control" name="health_etity" required id="health_etity">
@@ -147,6 +197,14 @@
                             <input type="date" name="edit_dob" id="edit_dob" required autocomplete="off" placeholder="Enter title">
                         </div>
                         <div class="col-md-4 col-sm-12">
+                            <label class="form-label">Gender <span style="color: red">*</span></label>
+                            <select class="form-control" name="edit_gender" required id="edit_gender">
+                                <option value="">Select Gender</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4 col-sm-12">
                             <label class="form-label">Provider Phone No <span style="color: red">*</span></label>
                             <input type="text" name="edit_phone" id="edit_phone" required autocomplete="off" placeholder="Enter Provider Phone No 1">
                         </div>
@@ -154,6 +212,48 @@
                             <label class="form-label">Provider Phone No 2</label>
                             <input type="text" name="edit_phone_2" id="edit_phone_2" autocomplete="off" placeholder="Enter Provider Phone No 2">
                         </div> -->
+                        <div class="col-md-4 col-sm-12">
+                            <label class="form-label">Specializations <span style="color: red">*</span></label>
+                            <select class="form-control" name="edit_specializations" required id="edit_specializations">
+                                <option value="">Select specializations</option>
+                                <option value="Allergists/Immunologists">Allergists/Immunologists</option>
+                                <option value="Anesthesiologists">Anesthesiologists</option>
+                                <option value="Cardiologists">Cardiologists</option>
+                                <option value="Colon and Rectal Surgeons">Colon and Rectal Surgeons</option>
+                                <option value="Critical Care Medicine Specialists">Critical Care Medicine Specialists</option>
+                                <option value="Dermatologists">Dermatologists</option>
+                                <option value="Endocrinologists">Endocrinologists</option>
+                                <option value="Emergency Medicine Specialists">Emergency Medicine Specialists</option>
+                                <option value="Family Physicians">Family Physicians</option>
+                                <option value="Gastroenterologists">Gastroenterologists</option>
+                                <option value="Geriatric Medicine Specialists">Geriatric Medicine Specialists</option>
+                                <option value="Hematologists">Hematologists</option>
+                                <option value="Hospice and Palliative Medicine Specialists">Hospice and Palliative Medicine Specialists</option>
+                                <option value="Infectious Disease Specialists">Infectious Disease Specialists</option>
+                                <option value="Internists">Internists</option>
+                                <option value="Medical Geneticists">Medical Geneticists</option>
+                                <option value="Nephrologists">Nephrologists</option>
+                                <option value="Neurologists">Neurologists</option>
+                                <option value="Obstetricians and Gynecologists">Obstetricians and Gynecologists</option>
+                                <option value="Oncologists">Oncologists</option>
+                                <option value="Ophthalmologists">Ophthalmologists</option>
+                                <option value="Osteopaths ">Osteopaths </option>
+                                <option value="Otolaryngologists">Otolaryngologists</option>
+                                <option value="Pathologists">Pathologists</option>
+                                <option value="Pediatricians">Pediatricians</option>
+                                <option value="Physiatrists">Physiatrists</option>
+                                <option value="Plastic Surgeons">Plastic Surgeons</option>
+                                <option value="Podiatrists">Podiatrists</option>
+                                <option value="Preventive Medicine Specialists">Preventive Medicine Specialists</option>
+                                <option value="Psychiatrists">Psychiatrists</option>
+                                <option value="Pulmonologists">Pulmonologists</option>
+                                <option value="Radiologists">Radiologists</option>
+                                <option value="Rheumatologists">Rheumatologists</option>
+                                <option value="Sleep Medicine Specialists">Sleep Medicine Specialists</option>
+                                <option value="General Surgeons">General Surgeons</option>
+                                <option value="Urologists">Urologists</option>
+                            </select>
+                        </div>
                         <div class="col-md-4 col-sm-12">
                             <label class="form-label">Select Health Entity <span style="color: red">*</span></label>
                             <select class="form-control" name="edit_health_etity" required id="edit_health_etity">
@@ -511,10 +611,12 @@ function editProvider(id) {
             $('#edit_fname').val(response.fname);
             $('#edit_lname').val(response.lname);
             $('#edit_email').val(response.email);
+            $('#edit_gender').val(response.gender);
             $('#edit_dob').val(response.dob);
             $('#edit_phone').val(response.phone);
             $('#edit_health_etity').val(response.health_etity);
             $('#edit_clinic').val(response.clinic);
+            $('#edit_specializations').val(response.specializations);
             $('#edit_provider').val(response.provider);
             $('#edit_insurance_provider').val(response.insurance_provider);
             $('#edit_userstatus').val(response.status);
