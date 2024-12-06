@@ -51,9 +51,9 @@
                             <input type="text" name="phone_2" id="phone_2" autocomplete="off" placeholder="Enter Provider Phone No 2">
                         </div> -->
                         <div class="col-md-4 col-sm-12">
-                            <label class="form-label">Specializations <span style="color: red">*</span></label>
+                            <label class="form-label">Select Provider Type <span style="color: red">*</span></label>
                             <select class="form-control" name="specializations" required id="userspecializations">
-                                <option value="">Select specializations</option>
+                                <option value="">Select Provider Type</option>
                                 <option value="Allergists/Immunologists">Allergists/Immunologists</option>
                                 <option value="Anesthesiologists">Anesthesiologists</option>
                                 <option value="Cardiologists">Cardiologists</option>
@@ -111,13 +111,13 @@
                                 <option value="">Select Clinic</option>
                             </select>
                         </div>
-                        <div class="col-md-4 col-sm-12">
+                        <!-- <div class="col-md-4 col-sm-12">
                             <label class="form-label">Select Provider Type<span style="color: red">*</span></label>
                             <select class="form-control" name="provider" required id="provider">
                                 <option value="">Select Provider Type</option>
                             </select>
                         </div>
-                        <!-- <div class="col-md-4 col-sm-12">
+                        <div class="col-md-4 col-sm-12">
                             <label class="form-label">Insurance Provider <span style="color: red">*</span></label>
                             <input type="text" name="insurance_provider"  id="insurance_provider" required autocomplete="off" placeholder="Enter Insurance Provider Name">
                         </div> -->
@@ -215,7 +215,7 @@
                         <div class="col-md-4 col-sm-12">
                             <label class="form-label">Specializations <span style="color: red">*</span></label>
                             <select class="form-control" name="edit_specializations" required id="edit_specializations">
-                                <option value="">Select specializations</option>
+                                <option value="">Select Specializations</option>
                                 <option value="Allergists/Immunologists">Allergists/Immunologists</option>
                                 <option value="Anesthesiologists">Anesthesiologists</option>
                                 <option value="Cardiologists">Cardiologists</option>
@@ -273,13 +273,13 @@
                                 <option value="">Select Clinic</option>
                             </select>
                         </div>
-                        <div class="col-md-4 col-sm-12">
+                        <!-- <div class="col-md-4 col-sm-12">
                             <label class="form-label">Select Provider <span style="color: red">*</span></label>
                             <select class="form-control" name="edit_provider" required id="edit_provider">
                                 <option value="">Select Provider</option>
                             </select>
                         </div>
-                        <!-- <div class="col-md-4 col-sm-12">
+                        <div class="col-md-4 col-sm-12">
                             <label class="form-label">Insurance Provider <span style="color: red">*</span></label>
                             <input type="text" name="edit_insurance_provider" id="edit_insurance_provider" required autocomplete="off" placeholder="Enter Insurance Provider Name">
                         </div> -->
@@ -585,13 +585,13 @@ function detailProvider(id) {
             $('#tag5').text('Enrolled By:' +response.added_by);
             $('#BodyText').text(response.about);
 
-            if (typeof response === 'string' && response.trim() !== '') {
+            if (response.image != null) {
                 $('#OwnerImg').attr('src', '<?= base_url('/uploads/profile/')?>' + response.image);
             } else {
                 $('#OwnerImg').attr('src', '<?= base_url('assets/users_assets/images/no_user.png') ?>');
             }
 
-            if (typeof response === 'string' && response.trim() !== '') {
+            if (response.image != null) {
                 $('#detailsImage').attr('src', '<?= base_url('/uploads/profile/')?>' + response.coverImage);
             } else {
                 $('#detailsImage').attr('src', '<?= base_url('assets/users_assets/images/no_bimage.png') ?>');
@@ -607,7 +607,9 @@ function editProvider(id) {
         url: '<?php echo base_url('coach/Dashboard/editProvider'); ?>',
         data: {u_id : uid},
         success: function(data){
+
             var response =JSON.parse(data);
+            console.log(response.image);
             $('#edit_fname').val(response.fname);
             $('#edit_lname').val(response.lname);
             $('#edit_email').val(response.email);
@@ -622,13 +624,13 @@ function editProvider(id) {
             $('#edit_userstatus').val(response.status);
             $('#edit_uid').val(response.id);
 
-            if (typeof response === 'string' && response.trim() !== '') {
+            if (response.image != null) {
                 $('#profileImagePreview').attr('src', '<?= base_url('/uploads/profile/')?>' + response.image);
             } else {
                 $('#profileImagePreview').attr('src', '<?= base_url('assets/users_assets/images/no_user.png') ?>');
             }
 
-            if (typeof response === 'string' && response.trim() !== '') {
+            if (response.coverImage != null) {
                 $('#coverImagePreview').attr('src', '<?= base_url('/uploads/profile/')?>' + response.coverImage);
             } else {
                 $('#coverImagePreview').attr('src', '<?= base_url('assets/users_assets/images/no_bimage.png') ?>');
