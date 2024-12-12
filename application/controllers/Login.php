@@ -44,8 +44,15 @@ class Login extends CI_Controller {
                             setcookie("loginPass", "");
                             unset($_COOKIE['loginId']);
                         }
-                        if($this->session->userdata('logusertype') == '2') {
+                        //echo $this->session->userdata('logusertype'); die();
+                        if($this->session->userdata('logusertype') == '1') {
+                            redirect(base_url('participant/dashboard'), 'refresh');
+                        } else if($this->session->userdata('logusertype') == '2') {
                             redirect(base_url('coach/dashboard'), 'refresh');
+                        } else if($this->session->userdata('logusertype') == '3') {
+                            redirect(base_url('clinic_admin/dashboard'), 'refresh');
+                        } else if($this->session->userdata('logusertype') == '5') {
+                            redirect(base_url('provider/dashboard'), 'refresh');
                         } else {
                             redirect(base_url('dashboard'), 'refresh');
                         }

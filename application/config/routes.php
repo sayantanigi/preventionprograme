@@ -75,6 +75,29 @@ $route['email/template-management'] = 'email/template_management';
 $route['setting/payment-method'] = 'setting/payment_method';
 $route['resetpassword/(:any)'] = 'Forgetpassword/reset/$1';
 
+//clinic admin
+$route['clinic_admin/profile_settings'] = 'clinic_admin/Dashboard/profile';
+$route['clinic_admin/update_profile'] = 'clinic_admin/Dashboard/update_profile';
+$route['clinic_admin/change_password'] = 'clinic_admin/Dashboard/change_password';
+
+$route['clinic_admin/clinic'] = 'clinic_admin/Dashboard/clinic';
+$route['clinic_admin/add_clinic'] = 'clinic_admin/Dashboard/add_clinic';
+$route['clinic_admin/update_clinic'] = 'clinic_admin/Dashboard/update_clinic';
+$route['clinic_admin/clinic_details/(:any)'] = 'clinic_admin/Dashboard/clinic_details/$1';
+
+$route['clinic_admin/add_clinic_admin'] = 'clinic_admin/Dashboard/add_clinic_admin';
+$route['clinic_admin/update_clinic_admin'] = 'clinic_admin/Dashboard/update_clinic_admin';
+
+$route['clinic_admin/participants'] = 'clinic_admin/Dashboard/participants';
+$route['clinic_admin/participants/(:any)'] = 'clinic_admin/Dashboard/participants/$1';
+$route['clinic_admin/add_participant'] = 'clinic_admin/Dashboard/add_participant';
+$route['clinic_admin/update_participant'] = 'clinic_admin/Dashboard/update_participant';
+
+$route['clinic_admin/providers'] = 'clinic_admin/Dashboard/providers';
+$route['clinic_admin/providers/(:any)'] = 'clinic_admin/Dashboard/providers/$1';
+$route['clinic_admin/add_provider'] = 'clinic_admin/Dashboard/add_provider';
+$route['clinic_admin/update_provider'] = 'clinic_admin/Dashboard/update_provider';
+
 
 //coach
 $route['coach/profile_settings'] = 'coach/Dashboard/profile';
