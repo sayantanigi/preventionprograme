@@ -66,19 +66,19 @@
 $(document).ready(function() {
     $('#confirm_password').on('keyup', function () {
         if ($('#password').val() == $('#confirm_password').val()) {
-            $('#message').html('Matching').css('color', 'green');
             $('#password').focus().css('border', '2px solid green');
+            //$('#message').html('Matching').css('color', 'green');
             $('#confirm_password').focus().css('border', '2px solid green');
             document.getElementById('signupButton').disabled = false;
         } else {
             $('#password').focus().css('border', '2px solid red');
             $('#confirm_password').focus().css('border', '2px solid red');
-            $('#message').html('Password Mismatch').css('color', 'red');
+            //$('#message').html('Password Mismatch').css('color', 'red');
             document.getElementById('signupButton').disabled = true;
         }
     });
 
-    $('#email').on('blur', function () {
+    $('#email').on('keyup', function () {
         var email = $(this).val();
         $.ajax({
             type: "POST",
@@ -90,11 +90,11 @@ $(document).ready(function() {
                 //console.log(returndata.success);
                 if(returndata.success == 'Email available') {
                     $('#email').fadeIn().css('border', '2px solid green');
-                    $('#message').html(returndata.success).css('color', 'red');
+                    //$('#message').html(returndata.success).css('color', 'green');
                     document.getElementById('signupButton').disabled = false;
                 } else {
                     $('#email').fadeIn().css('border', '2px solid red');
-                    $('#message').html(returndata.error).css('color', 'red');
+                    //$('#message').html(returndata.error).css('color', 'red');
                     document.getElementById('signupButton').disabled = true;
                 }
             }

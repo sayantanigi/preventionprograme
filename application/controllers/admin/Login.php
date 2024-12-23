@@ -21,12 +21,12 @@ class Login extends CI_Controller {
 				if (form_error('password')) {
 				    $msg .= strip_tags(form_error('password'));
 				}
-				
+
 				$data['msg'] =  '<div class="alert alert-success alert-dismissible fade show" role="alert">
 				'.$msg.'
 				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 				</div>';
-				
+
 			} else {
 				$username = $this->input->post('username');
 				$password = $this->input->post('password');
@@ -35,7 +35,6 @@ class Login extends CI_Controller {
 				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 				</div>';
 				if ($this->session->has_userdata('userId') && $this->session->has_userdata('admin')) {
-					
 					//echo $this->session->has_userdata('userId');die;
 					//echo $this->session->has_userdata('admin');die;
 					//echo $this->input->get('redirectto');die;
@@ -48,21 +47,21 @@ class Login extends CI_Controller {
 				}
 			}
 		}
-		if ($this->session->flashdata('msg')) { 
+		if ($this->session->flashdata('msg')) {
 		    $data['msg'] = $this->session->flashdata('msg');
 		}
 		$this->load->view('admin/login', $data);
 	}
 	public function logout()
 	{
-   
+
 		$this->session->unset_userdata('userId');
 		$this->session->unset_userdata('admin');
 		$msg = '<div class="alert alert-success alert-dismissible fade show" role="alert">
                    You have successfully logged out!
                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>';		
+                </div>';
 		$this->session->set_flashdata('msg', $msg);
 		redirect(base_url('admin/login'),'refresh');
 	}
-}	
+}

@@ -131,14 +131,14 @@ class Dashboard extends CI_Controller {
     /* All Clinic Section Star*/
     public function clinic() {
         $userId = $this->session->userdata('loguserId');
-        $allclinicadminlist = $this->db->query("SELECT health_entity.id AS cid, health_entity.clinic_id, health_entity.name as clinic_name, health_entity.status AS clinic_status, health_group_admin.id AS caid, CONCAT(health_group_admin.fname, ' ', health_group_admin.lname) AS clinic_admin_name, health_group_admin.email, health_group_admin.status AS clinic_admin_status FROM health_group_admin JOIN health_entity ON health_entity.id = health_group_admin.health_group_id WHERE health_entity.status = '1' AND health_group_admin.status = '1'")->result_array();
-        $alldeactivatedclinicadminlist = $this->db->query("SELECT health_entity.id AS cid, health_entity.clinic_id, health_entity.name as clinic_name, health_entity.status AS clinic_status, health_group_admin.id AS caid, CONCAT(health_group_admin.fname, ' ', health_group_admin.lname) AS clinic_admin_name, health_group_admin.email, health_group_admin.status AS clinic_admin_status FROM health_group_admin JOIN health_entity ON health_entity.id = health_group_admin.health_group_id WHERE health_entity.status = '0' OR health_group_admin.status = '0'")->result_array();
+        $allclinicadminlist = $this->db->query("SELECT clinic.id AS cid, clinic.clinic_code, clinic.name as clinic_name, clinic.status AS clinic_status, users.id AS uaid, CONCAT(users.fname, ' ', users.lname) AS clinic_admin_name, users.email, users.status AS clinic_admin_status FROM users JOIN clinic ON clinic.id = users.clinic WHERE clinic.status = '1' AND users.status = '1'")->result_array();
+        $alldeactivatedclinicadminlist = $this->db->query("SELECT clinic.id AS cid, clinic.clinic_code, clinic.name as clinic_name, clinic.status AS clinic_status, users.id AS uaid, CONCAT(users.fname, ' ', users.lname) AS clinic_admin_name, users.email, users.status AS clinic_admin_status FROM users JOIN clinic ON clinic.id = users.clinic WHERE clinic.status = '0' OR users.status = '0'")->result_array();
 
         $data = array(
             'title' => 'Prevention Programme',
             'page' => 'Clinic Management',
             'subpage' => 'clinic',
-            'entity' => $this->db->query("SELECT * FROM health_entity WHERE status = '1' ORDER BY name ASC")->result(),
+            'entity' => $this->db->query("SELECT * FROM clinic WHERE status = '1' ORDER BY name ASC")->result(),
             'allClinicAdminList' => $allclinicadminlist,
             'allDeactivatedClinicAdminList' => $alldeactivatedclinicadminlist
         );
@@ -149,7 +149,7 @@ class Dashboard extends CI_Controller {
     }
     public function check_clinic_name() {
         $clinic_name = $_POST['clinic_name'];
-        $checkClinic_name = $this->db->query('SELECT * FROM health_entity WHERE name = "'.$clinic_name.'"')->row();
+        $checkClinic_name = $this->db->query('SELECT * FROM clinic WHERE name = "'.$clinic_name.'"')->row();
         if(!empty($checkClinic_name)) {
             $msg = array('status'=>'error', 'message' => 'Clinic name already exists.');
         } else {
@@ -160,23 +160,18 @@ class Dashboard extends CI_Controller {
     public function add_clinic() {
         $userId = $this->session->userdata('loguserId');
         $getlastinsertedclinicID = $this->db->query("SELECT clinic_id FROM health_entity ORDER BY id DESC")->row();
-        $lastinsertedclinicId = $getlastinsertedclinicID->clinic_id;
-        if(!empty($getlastinsertedclinicID)) {
-            $newinsertclinicId = (int)$lastinsertedclinicId + 1;
-        } else {
-            $newinsertclinicId = '1000';
-        }
+
         $data = array(
-            'clinic_id' => $newinsertclinicId,
+            'clinic_code' => random_int(100000, 999999),
             'name' => $_POST['clinic_name'],
             'status' => $_POST['clinic_status'],
             'added_by' => $userId,
             'created_at' => date('Y-m-d H:i:s')
         );
-        $this->db->insert('health_entity', $data);
+        $this->db->insert('clinic', $data);
         $lastinsertedID = $this->db->insert_id();
 
-        $datacadmin = array(
+        /*$datacadmin = array(
             'health_group_id' => $lastinsertedID,
             'fname' => '',
             'lname' => '',
@@ -185,14 +180,14 @@ class Dashboard extends CI_Controller {
             'added_by' => $userId,
             'created_at'   => date('Y-m-d H:i:s')
         );
-        $this->db->insert('health_group_admin', $datacadmin);
+        $this->db->insert('health_group_admin', $datacadmin);*/
 
         $this->session->set_flashdata('message', 'Clinic added Successfully.');
         redirect(base_url('clinic_admin/clinic'));
     }
     public function edit_Clinic() {
         $clinic_id = $this->input->post('c_id');
-        $getData = $this->db->query("SELECT * FROM health_entity WHERE id = '".$clinic_id."'")->row();
+        $getData = $this->db->query("SELECT * FROM clinic WHERE id = '".$clinic_id."'")->row();
         echo json_encode($getData);
     }
     public function update_clinic() {
@@ -201,7 +196,7 @@ class Dashboard extends CI_Controller {
             'name' => $_POST['edit_clinicname'],
             'status' => $_POST['edit_clinicstatus'],
         );
-        $this->db->update('health_entity', $data, "id='" . $cid . "'");
+        $this->db->update('clinic', $data, "id='" . $cid . "'");
         $this->session->set_flashdata('message', 'Clinic updated Successfully');
         redirect(base_url('clinic_admin/clinic'));
     }
@@ -222,7 +217,7 @@ class Dashboard extends CI_Controller {
             $msg = 'Clinic admin deactivated successfully!';
         }
         $data = array('status'=> $status);
-        if ($this->db->update('health_group_admin', $data, "id='" . $caId . "'")) {
+        if ($this->db->update('users', $data, "id='" . $caId . "'")) {
             echo '["' . $msg . '", "success", "#A5DC86"]';
         } else {
             echo '["Some error occured, Please try again!", "error", "#DD6B55"]';
@@ -231,32 +226,33 @@ class Dashboard extends CI_Controller {
     public function add_clinic_admin() {
         $userId = $this->session->userdata('loguserId');
         $data = array(
-            'health_group_id' => $_POST['health_group_id'],
+            'clinic' => $_POST['health_group_id'],
             'fname' => $_POST['fname'],
             'lname' => $_POST['lname'],
             'email' => $_POST['email'],
             'status' => $_POST['status'],
             'added_by' => $userId,
+            'user_type' => '3',
             'created_at'   => date('Y-m-d H:i:s')
         );
-        $this->db->insert('health_group_admin', $data);
+        $this->db->insert('users', $data);
         $this->session->set_flashdata('message', 'Clinic admin added Successfully.');
         redirect(base_url('clinic_admin/clinic'));
     }
     public function edit_clinic_admin() {
-        $ca_id = $this->input->post('ca_id');
-        $getData = $this->db->query("SELECT * FROM health_group_admin WHERE id = '".$ca_id."'")->row();
+        $ua_id = $this->input->post('ua_id');
+        $getData = $this->db->query("SELECT * FROM users WHERE id = '".$ua_id."'")->row();
         echo json_encode($getData);
     }
     public function update_clinic_admin() {
         $data = array(
-            'health_group_id' => $_POST['edit_health_group_id'],
+            'clinic' => $_POST['edit_health_group_id'],
             'fname' => $_POST['edit_clinicadminfname'],
             'lname' => $_POST['edit_clinicadminlname'],
             'email' => $_POST['edit_clinicadminemail'],
             'status' => $_POST['edit_clinicadminstatus']
         );
-        $this->db->update('health_group_admin', $data, "id='" . $_POST['edit_caid'] . "'");
+        $this->db->update('users', $data, "id='" . $_POST['edit_caid'] . "'");
         $this->session->set_flashdata('message', 'Clinic admin updated Successfully');
         redirect(base_url('clinic_admin/clinic'));
     }

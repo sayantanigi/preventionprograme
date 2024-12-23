@@ -67,11 +67,11 @@ a.morelink {
 	                  	<div class="col-sm-10">
 	                     	<h4 class="card-title mb-4">About Us</h4>
 	                     </div>
-	                     
+
 	                     <div class="col-sm-2 text-end" style="padding-left: 54px;">
 	                     	<!--<a href="#" class="btn btn-success btn-sm"><i class="fa fa-plus"></i>&nbsp;Add</a>-->
 	                     </div>
-	                  </div>   	
+	                  </div>
                      <div class="">
                         <table id="datatable" class="table table-bordered dt-responsive nowrap w-100">
 								   <thead class="thead-light text-center">
@@ -111,13 +111,13 @@ a.morelink {
 														<label class="form-check-label" for="statusChange_<?=$key?>"></label>
 													</div>
 												</td>
-												
+
 												<td class="text-center">
 												    <a href="<?= base_url('admin/cms/edit_about_us/'.$v->id) ?>" class="btn btn-outline-success btn-sm" data-toggle="tooltip" title="Edit">
 														<i class="fas fa-edit"></i>
 													</a>
 												</td>
-											
+
 											</tr>
 										<?php endforeach ?>
 									<?php } ?>
@@ -163,7 +163,7 @@ a.morelink {
                <!-- end card -->
             </div>
             <!-- end col -->
-            
+
          </div>
          <!-- end col -->
       </div>
@@ -171,7 +171,7 @@ a.morelink {
    <!-- End Page-content -->
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.min.js"></script>   
+<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.min.js"></script>
 <script>
 $(document).ready(function() {
 	var showChar = 50;
@@ -200,10 +200,10 @@ $(document).ready(function() {
 		return false;
 	});
 });
-</script>   
+</script>
 <script type="text/javascript">
 
-	function deletePck(pckId) 
+	function deletePck(pckId)
 	{
 		swal({
 			title: 'Are You sure want to delete this?',
@@ -221,36 +221,36 @@ $(document).ready(function() {
 			}
 		});
 	}
-	
+
 	//Article status change function
-	function changePckStatus(id, thisSwitch) {      
-		var newStatus;      
-		if (thisSwitch.val() == 1) {         
-			thisSwitch.val('0');       
+	function changePckStatus(id, thisSwitch) {
+		var newStatus;
+		if (thisSwitch.val() == 1) {
+			thisSwitch.val('0');
 			newStatus = '0';
-		} else {      
-			thisSwitch.val('1');       
+		} else {
+			thisSwitch.val('1');
 			newStatus = '1';
 		}
-      
-		$.ajax({         
-			url: '<?php echo base_url('admin/cms/changestatus'); ?>',     
-			type: 'POST',       
-			dataType: 'json',       
-			data: {         
-				pckId: String(id),        
-				status: String(newStatus)        
+
+		$.ajax({
+			url: '<?php echo base_url('admin/cms/changestatus'); ?>',
+			type: 'POST',
+			dataType: 'json',
+			data: {
+				pckId: String(id),
+				status: String(newStatus)
 			},
 		})
-		.done(function(data) {  
+		.done(function(data) {
 			if(newStatus == 1){
 				swal({title: "Sucess!", text: "<strong>About Us status is Activate</strong>", type: "success", showConfirmButton: true, html:true}, function(){ window.location.href = " "});
 			}else if(newStatus == 0){
 				swal({title: "Sucess!", text: "<strong>About Us status is Inctivate</strong>", type: "success", showConfirmButton: true, html:true}, function(){ window.location.href = " "});
 			}
 		})
-		.fail(function(data) {      
-			console.log(data);       
-		}); 
+		.fail(function(data) {
+			console.log(data);
+		});
 	}
  </script>

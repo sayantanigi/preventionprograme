@@ -6,8 +6,8 @@
     .checkbox-inline.checbox-switch,.checkbox.checbox-switch label{display:inline-block;position:relative;padding-left:0}
     .checkbox-inline.checbox-switch input,.checkbox.checbox-switch label input{display:none}
     .checkbox-inline.checbox-switch span,.checkbox.checbox-switch label span{width:35px;border-radius:20px;height:22px;border:1px solid #dfdfdf;background-color:#fff;box-shadow:#dfdfdf 0 0 0 0 inset;transition:border .4s,box-shadow .4s;display:inline-block;vertical-align:middle;margin-right:5px}
-    .checkbox-inline.checbox-switch span:before,.checkbox.checbox-switch label span:before{display:inline-block;width:16px;height:16px;border-radius:50%;background:#fff;content:" ";top:0;position:relative;left:0;transition:.3s;box-shadow:0 1px 4px rgba(0,0,0,.4)}
-    .checkbox-inline.checbox-switch>input:checked+span:before,.checkbox.checbox-switch label>input:checked+span:before{left:17px}
+    .checkbox-inline.checbox-switch span:before,.checkbox.checbox-switch label span:before{display:inline-block;width:16px;height:16px;border-radius:50%;background:#fff;content:" ";top:1px;position:relative;left:2px;transition:.3s;box-shadow:0 1px 4px rgba(0,0,0,.4)}
+    .checkbox-inline.checbox-switch>input:checked+span:before,.checkbox.checbox-switch label>input:checked+span:before{left:15px}
     .checkbox-inline.checbox-switch>input:checked+span,.checkbox.checbox-switch label>input:checked+span{background-color:#b4b6b7;border-color:#b4b6b7;box-shadow:#b4b6b7 0 0 0 8px inset;transition:border .4s,box-shadow .4s,background-color 1.2s}
     .checkbox-inline.checbox-switch>input:checked:disabled+span,.checkbox.checbox-switch label>input:checked:disabled+span{background-color:#dcdcdc;border-color:#dcdcdc;box-shadow:#dcdcdc 0 0 0 8px inset;transition:border .4s,box-shadow .4s,background-color 1.2s}
     .checkbox-inline.checbox-switch>input:disabled+span,.checkbox.checbox-switch label>input:disabled+span{background-color:#e8ebee;border-color:#fff}
@@ -220,7 +220,7 @@
                             </select>
                         </div>
                         <div class="modal-footer" style="margin: 0; border: none; padding: 0px 6px 0px 0px;">
-                            <button type="submit" class="btn btn-primary">Update Participant</button>
+                            <button type="submit" class="btn btn-primary">Update Clinic Admin</button>
                             <input type="hidden" name="edit_caid" id="edit_caid" value="">
                         </div>
                     </form>
@@ -265,20 +265,20 @@
             <?php if(!empty($allClinicAdminList)) {
                 foreach ($allClinicAdminList as $key => $data) { ?>
                 <tr>
-                    <td><a href="<?= base_url('clinic_admin/providers/'.$data['clinic_id'])?>"><?= $data['clinic_id']?></a></td>
+                    <td><a href="<?= base_url('clinic_admin/providers/'.$data['clinic_code'])?>"><?= $data['clinic_code']?></a></td>
                     <td>
                         <?= $data['clinic_name']?>
                         <i class="fa fa-edit fa-1x text-danger removeClinic" data-bs-toggle="modal" data-bs-target="#EditClinicModal" onclick="editClinic('<?= $data['cid']?>')"></i>
                     </td>
                     <td><?= $data['clinic_admin_name']?></td>
                     <td>
-                        <i class="fa fa-edit fa-1x text-danger removeClinic" data-bs-toggle="modal" data-bs-target="#EditClinicAdminModal" onclick="editClinicAdmin('<?= $data['caid']?>')"></i>
-                        <i class="fa fa-trash fa-1x text-danger removeClinic" data-bs-toggle="modal" data-bs-target="#DeleteClinicModal" onclick="deleteClinicAdmin('<?= $data['caid']?>')"></i>
+                        <i class="fa fa-edit fa-1x text-danger removeClinic" data-bs-toggle="modal" data-bs-target="#EditClinicAdminModal" onclick="editClinicAdmin('<?= $data['uaid']?>')"></i>
+                        <i class="fa fa-trash fa-1x text-danger removeClinic" data-bs-toggle="modal" data-bs-target="#DeleteClinicModal" onclick="deleteClinicAdmin('<?= $data['uaid']?>')"></i>
                     </td>
                     <td>
                         <div class="checkbox checbox-switch switch-success">
                             <label>
-                                <input type="checkbox" value="<?= $data['clinic_admin_status']?>" <?= (@$data['clinic_admin_status'] == 1) ? 'checked="checked"' : ''; ?> onchange="changeClinicadminStatus(<?= @$data['caid'] ?>, $(this))">
+                                <input type="checkbox" value="<?= $data['clinic_admin_status']?>" <?= (@$data['clinic_admin_status'] == 1) ? 'checked="checked"' : ''; ?> onchange="changeClinicadminStatus(<?= @$data['uaid'] ?>, $(this))">
                                 <span></span>
                             </label>
                         </div>
@@ -308,18 +308,18 @@
             <?php if(!empty($allDeactivatedClinicAdminList)) {
                 foreach ($allDeactivatedClinicAdminList as $key => $data) { ?>
                 <tr>
-                    <td><?= $data['clinic_id']?></td>
+                    <td><?= $data['clinic_code']?></td>
                     <td>
                         <?= $data['clinic_name']?>
                     </td>
                     <td><?= $data['clinic_admin_name']?></td>
                     <td>
-                        <i class="fa fa-trash fa-1x text-danger removeClinic" data-bs-toggle="modal" data-bs-target="#DeleteClinicModal" onclick="deleteClinicAdmin('<?= $data['caid']?>')"></i>
+                        <i class="fa fa-trash fa-1x text-danger removeClinic" data-bs-toggle="modal" data-bs-target="#DeleteClinicModal" onclick="deleteClinicAdmin('<?= $data['uaid']?>')"></i>
                     </td>
                     <td>
                         <div class="checkbox checbox-switch switch-success">
                             <label>
-                                <input type="checkbox" value="<?= $data['clinic_admin_status']?>" <?= (@$data['clinic_admin_status'] == 1) ? 'checked="checked"' : ''; ?> onchange="changeClinicadminStatus(<?= @$data['caid'] ?>, $(this))">
+                                <input type="checkbox" value="<?= $data['clinic_admin_status']?>" <?= (@$data['clinic_admin_status'] == 1) ? 'checked="checked"' : ''; ?> onchange="changeClinicadminStatus(<?= @$data['uaid'] ?>, $(this))">
                                 <span></span>
                             </label>
                         </div>
@@ -494,15 +494,15 @@ function changeClinicadminStatus(id, thisSwitch) {
     });
 }
 
-function editClinicAdmin(caid){
+function editClinicAdmin(uaid){
     $.ajax({
         type: 'POST',
         url: '<?php echo base_url('clinic_admin/Dashboard/edit_clinic_admin'); ?>',
-        data: {ca_id : caid},
+        data: {ua_id : uaid},
         success: function(data){
             var response =JSON.parse(data);
             console.log(response);
-            $('#edit_health_group_id').val(response.health_group_id);
+            $('#edit_health_group_id').val(response.clinic);
             $('#edit_clinicadminfname').val(response.fname);
             $('#edit_clinicadminlname').val(response.lname);
             $('#edit_clinicadminemail').val(response.email);
