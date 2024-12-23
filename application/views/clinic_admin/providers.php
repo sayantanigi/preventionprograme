@@ -28,7 +28,7 @@
                         </div>
                         <div class="col-md-4 col-sm-12">
                             <label class="form-label">Provider Email Id <span style="color: red">*</span></label>
-                            <input type="email" name="email" id="provider_email " required autocomplete="off" placeholder="Enter Provider Email Id">
+                            <input type="email" name="email" id="provider_email" required autocomplete="off" placeholder="Enter Provider Email Id">
                         </div>
                         <div class="col-md-4 col-sm-12">
                             <label class="form-label">Provider Date of birth <span style="color: red">*</span></label>
@@ -89,22 +89,16 @@
                             </select>
                         </div>
                         <div class="col-md-4 col-sm-12">
-                            <label class="form-label">Select Health Group <span style="color: red">*</span></label>
-                            <select class="form-control" name="health_etity" required id="health_etity">
-                                <option value="">Select Health Group</option>
+                            <label class="form-label">Select Clinic <span style="color: red">*</span></label>
+                            <select class="form-control" name="clinic" id="clinic" required>
+                                <option value="">Select Clinic</option>
                                 <?php
-                                if(@$entity){
-                                    foreach(@$entity as $k => $v){
+                                if(@$clinic){
+                                    foreach(@$clinic as $k => $v){
                                         echo '<option value="'.@$v->id.'">'.@$v->name.'</option>';
                                     }
                                 }
                                 ?>
-                            </select>
-                        </div>
-                        <div class="col-md-4 col-sm-12">
-                            <label class="form-label">Select Clinic <span style="color: red">*</span></label>
-                            <select class="form-control" name="clinic" id="clinic" required>
-                                <option value="">Select Clinic</option>
                             </select>
                         </div>
 

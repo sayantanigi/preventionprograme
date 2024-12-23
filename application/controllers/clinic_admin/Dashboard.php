@@ -131,8 +131,8 @@ class Dashboard extends CI_Controller {
     /* All Clinic Section Star*/
     public function clinic() {
         $userId = $this->session->userdata('loguserId');
-        $allclinicadminlist = $this->db->query("SELECT clinic.id AS cid, clinic.clinic_code, clinic.name as clinic_name, clinic.status AS clinic_status, users.id AS uaid, CONCAT(users.fname, ' ', users.lname) AS clinic_admin_name, users.email, users.status AS clinic_admin_status FROM users JOIN clinic ON clinic.id = users.clinic WHERE clinic.status = '1' AND users.status = '1'")->result_array();
-        $alldeactivatedclinicadminlist = $this->db->query("SELECT clinic.id AS cid, clinic.clinic_code, clinic.name as clinic_name, clinic.status AS clinic_status, users.id AS uaid, CONCAT(users.fname, ' ', users.lname) AS clinic_admin_name, users.email, users.status AS clinic_admin_status FROM users JOIN clinic ON clinic.id = users.clinic WHERE clinic.status = '0' OR users.status = '0'")->result_array();
+        $allclinicadminlist = $this->db->query("SELECT clinic.id AS cid, clinic.clinic_code, clinic.name as clinic_name, clinic.status AS clinic_status, users.id AS uaid, CONCAT(users.fname, ' ', users.lname) AS clinic_admin_name, users.email, users.status AS clinic_admin_status FROM users JOIN clinic ON clinic.id = users.clinic WHERE user_type = '3' AND clinic.status = '1' AND users.status = '1'")->result_array();
+        $alldeactivatedclinicadminlist = $this->db->query("SELECT clinic.id AS cid, clinic.clinic_code, clinic.name as clinic_name, clinic.status AS clinic_status, users.id AS uaid, CONCAT(users.fname, ' ', users.lname) AS clinic_admin_name, users.email, users.status AS clinic_admin_status FROM users JOIN clinic ON clinic.id = users.clinic WHERE user_type = '3' AND clinic.status = '0' OR users.status = '0'")->result_array();
 
         $data = array(
             'title' => 'Prevention Programme',
@@ -223,9 +223,20 @@ class Dashboard extends CI_Controller {
             echo '["Some error occured, Please try again!", "error", "#DD6B55"]';
         }
     }
+    public function check_clinic_admin_email() {
+        $email = $this->input->post('clinic_admin_email');
+        $checkEmail = $this->db->query("SELECT * FROM users WHERE email = '".$email."'")->row();
+        if (!empty($checkEmail)) {
+            $response = array('status'=>'error', 'message'=>'The given email address already exists.');
+        } else {
+            $response = array('status'=>'success', 'message'=>'Email address available.');
+        }
+        echo json_encode($response);
+    }
     public function add_clinic_admin() {
         $userId = $this->session->userdata('loguserId');
         $data = array(
+            'participant_code' => strtotime(date('Y-m-d H:i:s')),
             'clinic' => $_POST['health_group_id'],
             'fname' => $_POST['fname'],
             'lname' => $_POST['lname'],
@@ -262,17 +273,19 @@ class Dashboard extends CI_Controller {
     public function providers($id = false) {
         $userId = $this->session->userdata('loguserId');
         if(!empty($id)){
-            $clinicData = $this->db->query("SELECT * FROM health_entity WHERE clinic_id = '".$id."'")->row();
+            $clinicData = $this->db->query("SELECT * FROM clinic WHERE clinic_code = '".$id."'")->row();
             $clinicID = $clinicData->id;
             $data = array(
-                'entity' => $this->db->query("SELECT * FROM health_entity WHERE id = '".$clinicID."' AND status = '1'")->result(),
+                //'entity' => $this->db->query("SELECT * FROM health_entity WHERE id = '".$clinicID."' AND status = '1'")->result(),
+                'clinic' => $this->db->query("SELECT * FROM clinic WHERE id = '".$clinicID."' AND status = '1' ORDER BY name ASC")->result(),
                 'allProvider_list' => $this->db->query("SELECT * FROM users WHERE added_by = '".$userId."' AND clinic = '".$clinicID."' AND user_type = '5' ORDER BY id DESC")->result(),
                 'allunassignedProvider_list' => $this->db->query("SELECT * FROM users WHERE status = '1' AND added_by = '".$userId."' AND clinic = '".$clinicID."'  AND user_type = '5' AND (assigned_to = '' OR assigned_to IS NULL) ORDER BY id DESC")->result(),
                 'alldeactivatedProvider_list' => $this->db->query("SELECT * FROM users WHERE status != '1' AND added_by = '".$userId."' AND clinic = '".$clinicID."'  AND user_type = '5' ORDER BY id DESC")->result()
             );
         } else {
             $data = array(
-                'entity' => $this->db->query("SELECT * FROM health_entity WHERE status = '1' ORDER BY name ASC")->result(),
+                //'entity' => $this->db->query("SELECT * FROM health_entity WHERE status = '1' ORDER BY name ASC")->result(),
+                'clinic' => $this->db->query("SELECT * FROM clinic WHERE status = '1' ORDER BY name ASC")->result(),
                 'allProvider_list' => $this->db->query("SELECT * FROM users WHERE added_by = '".$userId."' AND user_type = '5' ORDER BY id DESC")->result(),
                 'allunassignedProvider_list' => $this->db->query("SELECT * FROM users WHERE status = '1' AND added_by = '".$userId."' AND user_type = '5' AND (assigned_to = '' OR assigned_to IS NULL) ORDER BY id DESC")->result(),
                 'alldeactivatedProvider_list' => $this->db->query("SELECT * FROM users WHERE status != '1' AND added_by = '".$userId."' AND user_type = '5' ORDER BY id DESC")->result()
@@ -395,7 +408,7 @@ class Dashboard extends CI_Controller {
                 'provider' => $this->db->query("SELECT * FROM users WHERE id = '".$id."'")->result(),
                 'allParticipant_list' => $this->db->query("SELECT * FROM users WHERE provider = '".$id."' AND user_type = '1' ORDER BY id DESC")->result(),
                 'allunassignedParticipant_list' => $this->db->query("SELECT * FROM users WHERE status = '1' AND provider = '".$id."' AND user_type = '1' AND (provider = '' OR provider IS NULL) ORDER BY id DESC")->result(),
-                'alldeactivatedParticipant_list' => $this->db->query("SELECT * FROM users WHERE (status != '1' OR status = '' OR status IS NULL) AND provider = '".$providerID."' AND user_type = '1' ORDER BY id DESC")->result()
+                'alldeactivatedParticipant_list' => $this->db->query("SELECT * FROM users WHERE (status != '1' OR status = '' OR status IS NULL) AND added_by = '".$userId."' AND user_type = '1' ORDER BY id DESC")->result()
             );
         } else {
             $data = array(

@@ -31,8 +31,8 @@
 		bottom: 0 !important;
 		margin: -7px 83px 0px !important;
 	}
-	
-	
+
+
 </style>
 
 <div class="main-content">
@@ -62,11 +62,11 @@
 	                  	<div class="col-sm-10">
 	                     	<h4 class="card-title mb-4">Health Coach List</h4>
 	                     </div>
-	                     
+
 	                     <div class="col-sm-2 text-end" style="padding-left: 54px;">
 	                     	 <a href="<?=base_url('admin/users/add_coach')?>" class="btn btn-success btn-sm"><i class="fa fa-plus"></i>&nbsp;Add Health Coach</a>
 	                     </div>
-	                  </div>   	
+	                  </div>
                      <div class="">
                         <table id="datatable" class="table table-bordered dt-responsive nowrap w-100">
 								   <thead class="thead-light text-center">
@@ -87,38 +87,38 @@
 												<td><?= $key+1 ?></td>
 												<td><?=ucfirst(@$v->fname); ?> &nbsp; <?=ucfirst(@$v->lname); ?></td>
 												<td><?=ucfirst(@$v->email); ?></td>
-												<td><?=ucfirst(@$v->phone); ?></td>
-												<td><?=ucfirst(@$v->address); ?></td>
-												
-												
+												<td><?= @$v->phone ?></td>
+												<td><?= @$v->address; ?></td>
+
+
 												<td>
 													<div class="form-check mb-3 mt-3">
 														<input type="checkbox" class="form-check-input small" id="statusChange_<?=$key?>" switch="bool" value="<?= @$v->status ?>" <?= (@$v->status == 1)? 'checked':'' ?>  onchange="changeDealStatus(<?=@$v->id?>, $(this))">
 														<label class="form-check-label" for="statusChange_<?=$key?>"></label>
 													</div>
 												</td>
-												
+
 												<td class="text-center">
 												    <a href="<?= base_url('admin/users/edit_teamcoach/'.$v->id) ?>" class="btn btn-outline-success btn-sm" data-toggle="tooltip" title="Edit">
 														<i class="fas fa-edit"></i>
 													</a>
-													
+
 													<a href="<?= base_url('admin/users/view_teamcoach/'.@$v->id) ?>" class="btn btn-outline-success btn-sm" data-toggle="tooltip" title="View">
 														<i class="fa fa-eye"></i>
 													</a>
-													
-													
-													
-													
-													
-												
-													
+
+
+
+
+
+
+
 													<a href="javascript:void(0)" class="btn btn-outline-warning btn-sm" data-toggle="tooltip" title="Delete"  onclick="deleteDeals(<?= @$v->id ?>)">
 														<i class="fa fa-trash"></i>
 													</a>
-													
+
 												</td>
-											
+
 											</tr>
 										<?php endforeach ?>
 									<?php } ?>
@@ -126,8 +126,8 @@
 								</table>
 
 								<!-- <div class="container mt-3">
-  
-  
+
+
   <button type="button" class="btn btn-primary hide" data-bs-toggle="modal" data-bs-target="#dealModal">
     Open modal
   </button>
@@ -186,7 +186,7 @@
                <!-- end card -->
             </div>
             <!-- end col -->
-            
+
          </div>
          <!-- end col -->
       </div>
@@ -194,7 +194,7 @@
    <!-- End Page-content -->
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.min.js"></script>   
+<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.min.js"></script>
 
   <script type="text/javascript">
 var adminUrl = ""
@@ -225,7 +225,7 @@ var adminUrl = ""
             beforeSend: function() {
                 $.blockUI({
 
-                    // blockUI code with custom 
+                    // blockUI code with custom
                     // message and styling
                     message: "<h4>Just a moment...<h4>",
                     css: {
@@ -242,7 +242,7 @@ var adminUrl = ""
         });
     }
 
-	function deleteDeals(dealId) 
+	function deleteDeals(dealId)
 	{
 		swal({
 			title: 'Are You sure want to delete this?',
@@ -260,28 +260,28 @@ var adminUrl = ""
 			}
 		});
 	}
-	
+
 	//Article status change function
-	function changeDealStatus(id, thisSwitch) {      
-		var newStatus;      
-		if (thisSwitch.val() == 1) {         
-			thisSwitch.val('0');       
+	function changeDealStatus(id, thisSwitch) {
+		var newStatus;
+		if (thisSwitch.val() == 1) {
+			thisSwitch.val('0');
 			newStatus = '0';
-		} else {      
-			thisSwitch.val('1');       
+		} else {
+			thisSwitch.val('1');
 			newStatus = '1';
 		}
-      
-		$.ajax({         
-			url: '<?php echo base_url('admin/users/changestatus'); ?>',     
-			type: 'POST',       
-			dataType: 'json',       
-			data: {         
-				userId: String(id),        
-				status: String(newStatus)        
+
+		$.ajax({
+			url: '<?php echo base_url('admin/users/changestatus'); ?>',
+			type: 'POST',
+			dataType: 'json',
+			data: {
+				userId: String(id),
+				status: String(newStatus)
 			},
 		})
-		.done(function(data) {  
+		.done(function(data) {
 			// if(subpage == 'deallist'){
 			// var redirectURL = adminUrl+'deals';
 			// }
@@ -291,38 +291,38 @@ var adminUrl = ""
 			// var redirectURL = adminUrl+'unapproved-deals';
 			// }
 
-			// alert_response(data,redirectURL);   
+			// alert_response(data,redirectURL);
 			if(newStatus == 1){
 				swal({title: "Sucess!", text: "<strong>Your status is Activate</strong>", type: "success", showConfirmButton: true, html:true}, function(){ window.location.href = " "});
 			}else if(newStatus == 0){
 				swal({title: "Sucess!", text: "<strong>Your status is Inctivate</strong>", type: "success", showConfirmButton: true, html:true}, function(){ window.location.href = " "});
 			}
 		})
-		.fail(function(data) {      
-			console.log(data);       
-		}); 
+		.fail(function(data) {
+			console.log(data);
+		});
 	}
 
-	function changeDealApproval(id, thisSwitch,subpage) {      
-		var newStatus;      
-		if (thisSwitch.val() == 1) {         
-			thisSwitch.val('0');       
+	function changeDealApproval(id, thisSwitch,subpage) {
+		var newStatus;
+		if (thisSwitch.val() == 1) {
+			thisSwitch.val('0');
 			newStatus = '0';
-		} else {      
-			thisSwitch.val('1');       
+		} else {
+			thisSwitch.val('1');
 			newStatus = '1';
 		}
-      
-		$.ajax({      
-			url: adminUrl+'deals/approve',       
-			type: 'POST',       
-			dataType: 'json',       
-			data: {         
-				dealId: String(id),        
-				status: String(newStatus)        
+
+		$.ajax({
+			url: adminUrl+'deals/approve',
+			type: 'POST',
+			dataType: 'json',
+			data: {
+				dealId: String(id),
+				status: String(newStatus)
 			},
 		})
-		.done(function(data) {  
+		.done(function(data) {
 			if(subpage == 'deallist'){
          	var redirectURL = adminUrl+'deals';
          }
@@ -331,22 +331,22 @@ var adminUrl = ""
          }else{
          	var redirectURL = adminUrl+'unapproved-deals';
          }
-         
-         alert_response(data,redirectURL);   
+
+         alert_response(data,redirectURL);
 		})
-		.fail(function(data) {      
-			console.log(data);       
-		}); 
+		.fail(function(data) {
+			console.log(data);
+		});
 	}
 
 	//Article status change function
-	function changeHotDealStatus(id, currentStatus,subpage) {      
-		var newStatus;     
+	function changeHotDealStatus(id, currentStatus,subpage) {
+		var newStatus;
 
-		if (currentStatus == 1) {         
+		if (currentStatus == 1) {
 			newStatus = '0';
 			var confirmTxt = 'Remove this Deal from Hot Deals?';
-		} else {      
+		} else {
 			newStatus = '1';
 			var confirmTxt = 'Mark this Deal as a Hot Deal?';
 		}
@@ -364,16 +364,16 @@ var adminUrl = ""
 		}, function(isConfirm){
 			if (isConfirm) {
 
-				$.ajax({      
-					url: adminUrl+'deals/changehotdealstatus',       
-					type: 'POST',       
-					dataType: 'json',       
-					data: {         
-						dealId: String(id),        
-						hot_deal: String(newStatus)        
+				$.ajax({
+					url: adminUrl+'deals/changehotdealstatus',
+					type: 'POST',
+					dataType: 'json',
+					data: {
+						dealId: String(id),
+						hot_deal: String(newStatus)
 					},
 				})
-				.done(function(data) {      
+				.done(function(data) {
 		         if(subpage == 'deallist'){
 		         	var redirectURL = adminUrl+'deals';
 		         }
@@ -382,24 +382,24 @@ var adminUrl = ""
 		         }else{
 		         	var redirectURL = adminUrl+'unapproved-deals';
 		         }
-		         
+
 		         alert_response(data,redirectURL);
 				})
-				.fail(function(data) {      
-					console.log(data);       
-				}); 
+				.fail(function(data) {
+					console.log(data);
+				});
 			}
-		});	
+		});
 	}
 
 	//Article status change function
-	function changeFeaturedDealStatus(id, currentStatus) {      
-		var newStatus;     
+	function changeFeaturedDealStatus(id, currentStatus) {
+		var newStatus;
 
-		if (currentStatus == 1) {         
+		if (currentStatus == 1) {
 			newStatus = '0';
 			var confirmTxt = 'Remove this Deal from Featured Deals?';
-		} else {      
+		} else {
 			newStatus = '1';
 			var confirmTxt = 'Mark this Deal as a Featured Deal?';
 		}
@@ -417,26 +417,26 @@ var adminUrl = ""
 		}, function(isConfirm){
 			if (isConfirm) {
 
-				$.ajax({      
-					url: adminUrl+'deals/changefeatureddealstatus',       
-					type: 'POST',       
-					dataType: 'json',       
-					data: {         
-						dealId: String(id),        
-						featured_deal: String(newStatus)        
+				$.ajax({
+					url: adminUrl+'deals/changefeatureddealstatus',
+					type: 'POST',
+					dataType: 'json',
+					data: {
+						dealId: String(id),
+						featured_deal: String(newStatus)
 					},
 				})
-				.done(function(data) {      
+				.done(function(data) {
 		         var redirectURL = adminUrl+'hotdeals';
 		         alert_response(data,redirectURL);
 				})
-				.fail(function(data) {      
-					console.log(data);       
-				}); 
+				.fail(function(data) {
+					console.log(data);
+				});
 			}
-		});	
+		});
 	}
-	function addPlayers(dealId) 
+	function addPlayers(dealId)
 	{
 		swal({
 				title: '',
@@ -449,7 +449,7 @@ var adminUrl = ""
 				cancelButtonText: 'Add New Player',
 				//closeOnConfirm: true,
 				//closeOnCancel: true
-	
+
 			}, function(isConfirm){
 			if (isConfirm) {
 				//window.location.href = '<?= base_url('admin/users/add_teamplayer/') ?>'+dealId+'/?add=existing-players'
@@ -459,4 +459,3 @@ var adminUrl = ""
 		});
 	}
  </script>
- 

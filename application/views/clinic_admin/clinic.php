@@ -431,6 +431,32 @@ $('#edit_clinicname').keyup(function(e) {
     }
 });
 
+$('#email').blur(function() {
+    var email = $('#email').val();
+    if(email != "") {
+        $.ajax({
+            type: "POST",
+            url: "<?= base_url('clinic_admin/dashboard/check_clinic_admin_email') ?>",
+            data: {clinic_admin_email: email},
+            success: function(response) {
+                response = JSON.parse(response);
+                if(response.status == 'success') {
+                    $('#passerrormsg').fadeIn().html(response.message).css({'color':'green','margin-bottom':'5px'});
+                    $("#addParticipantButton").prop("disabled", false);
+                } else {
+                    $('#passerrormsg').fadeIn().html(response.message).css({'color':'red','margin-bottom':'5px'});
+                    setTimeout(function(){
+                        $("#passerrormsg").html("");
+                    },10000);
+                    $("#email").focus();
+                    $("#addParticipantButton").prop("disabled", true);
+                    return false;
+                }
+            }
+        })
+    }
+})
+
 function editClinic(id) {
     var cid = id;
     $.ajax({

@@ -38,7 +38,7 @@
                 <div class="footer-widget footer-widget--links">
                     <h2 class="footer-widget__title">Quick  <span>Links</span></h2>
                     <ul class="list-unstyled footer-widget__links">
-                        <li><a href="<?= base_url('preventionprogram')?>"> Preventing Pain</a></li>
+                        <li><a href="<?= base_url('preventingpain')?>"> Preventing Pain</a></li>
                         <li><a href="#"> Course Overview</a></li>
                         <li><a href="<?= base_url('about-us')?>"> About Us </a></li>
                         <li><a href="#"> Terms Of Use </a></li>
